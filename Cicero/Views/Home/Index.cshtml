@@ -3,13 +3,20 @@
     
 }
 
-<div class="row logo">
 
-    <img class="center-block" src="~/images/Logo Cicero.png" />
+<div ng-hide="hidemain" class="row">
 
-</div>
-<div class="row">
-    <button class="btn btn-block btn-info">Presenta tu reclamo</button>
+    <img class="center-block logo" src="~/images/Logo Cicero.png" />
+    <button ng-click="hidemain=true;showreclamo=true;" class="btn btn-block btn-info">Presenta tu reclamo</button>
     <button class="btn btn-block btn-info">Consulta tu reclamo</button>
     <button class="btn btn-block btn-danger">Chat en vivo</button>
 </div>
+
+<div ng-show="showreclamo" class="row">
+{{firstName}}
+</div>
+
+<div class="row">
+ {{lastName}}
+</div>
+
