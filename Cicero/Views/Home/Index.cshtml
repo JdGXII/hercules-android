@@ -7,16 +7,76 @@
 <div ng-hide="hidemain" class="row">
 
     <img class="center-block logo" src="~/images/Logo Cicero.png" />
-    <button ng-click="hidemain=true;showreclamo=true;" class="btn btn-block btn-info">Presenta tu reclamo</button>
+    <button ng-click="hidemain=true;showreclamodemandante=true;" class="btn btn-block btn-info">Presenta tu reclamo</button>
     <button class="btn btn-block btn-info">Consulta tu reclamo</button>
     <button class="btn btn-block btn-danger">Chat en vivo</button>
 </div>
 
-<div ng-show="showreclamo" class="row">
-{{firstName}}
+<div ng-show="showreclamodemandante" class="row">
+
+    @using (Html.BeginForm("PresentarReclamo", "Main", FormMethod.Post, new { id = "envio-reclamo", enctype = "multipart/form-data" }))
+    {
+        <div class="form-group">
+            <input class="form-control" type="text" placeholder="Nombres" name="nombre-demandante" />
+            <input class="form-control" type="text" placeholder="Apellidos" name="apellido-demandante" />
+            <input class="form-control" type="text" placeholder="DNI" name="dni-demandante" />
+            <input class="form-control" type="text" placeholder="Teléfono" name="telefono-demandante" />
+            <input class="form-control" type="text" placeholder="Correo electrónico" name="email-demandante" />
+        </div>
+
+    }
+        <div style="text-align:center;">
+            <button ng-click="hidemain=false;showreclamodemandante=false;" class="btn btn-info">Regresar</button>
+            <button ng-click="showreclamodemandante=false;showreclamodemandado=true;" class="btn btn-info">Siguiente</button>
+        </div>
+
+
 </div>
 
-<div class="row">
- {{lastName}}
+<div ng-show="showreclamodemandado" class="row">
+
+  
+    <div class="form-group">
+
+        <input form="envio-reclamo" data-width="150" data-on="<b>Es empresa</b>" data-off="<b>No es empresa</b>" type="checkbox" checked data-toggle="toggle" name="es-empresa" />
+        <input form="envio-reclamo" class="form-control" type="text" placeholder="Nombre" name="nombre-demandado" />
+        <input form="envio-reclamo" class="form-control" type="text" placeholder="RUC/DNI" name="ruc-demandado" />
+        <input form="envio-reclamo" class="form-control" type="text" placeholder="Teléfono (opcional)" name="telefono-demandado" />
+        <input form="envio-reclamo" class="form-control" type="text" placeholder="Correo electrónico (opcional)" name="email-demandado" />
+    </div>
+
+   
+    <div style="text-align:center;">
+        <button ng-click="showreclamodemandante=true;showreclamodemandado=false;" class="btn btn-info">Regresar</button>
+        <button ng-click="showreclamodemandado=false;showreclamohechos=true;" class="btn btn-info">Siguiente</button>
+    </div>
+
+
+</div>
+
+<div ng-show="showreclamohechos" class="row">
+    <div class="form-group">
+
+        <p style="text-align:center;">Sube un vídeo describiendo tu problema</p>
+        <label class="btn btn-success btn-block btn-file">
+            <b>+ Añadir video</b> <input style="display: none;" form="envio-reclamo" type="file" name="video-demandante" />
+        </label>
+        <br />
+        <p style="text-align:center;">Sube una foto de tu DNI y otros documentos que consideres importantes</p>
+        <label class="btn btn-success btn-block btn-file">
+            <b>+ Añadir documento</b> <input style="display: none;" form="envio-reclamo" type="file" name="documentos-demandante" />
+        </label>
+        <br />
+        <p>¿Deseas añadir algo?</p>
+        <input type="text" form="envio-reclamo" class="form-control" name="comentario-demandante" />
+
+
+    </div>
+
+
+    <div style="text-align:center;">
+        <button ng-click="showreclamodemandado=true;showreclamohechos=false;" class="btn btn-info">Regresar</button>
+        <button ng-click="showreclamohechos=false;showreclamosolicitud=true;" class="btn btn-info">Siguiente</button>
+    </div>
 </div>
 
