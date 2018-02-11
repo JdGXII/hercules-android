@@ -80,3 +80,28 @@
     </div>
 </div>
 
+<div ng-show="showreclamosolicitud" class="row">
+
+    <div class="form-group">
+
+        <h3 style="color:blue;text-align:center;">¿Qué esperas obtener con tu reclamo?</h3>
+        <div  class="radio">
+            <label><input form="envio-reclamo" type="radio" name="solicitud" value="cambio">Cambio de producto o servicio</label>
+        </div>
+        <div class="radio">
+            <label><input form="envio-reclamo" type="radio" name="solicitud" value="indemnizacion">Indemnización 2X1</label>
+        </div>
+        <div class="radio">
+            <label><input form="envio-reclamo" type="radio" name="solicitud" value="">Otro (específica) <input id="texto-solicitud" type="text" form="envio-reclamo" class="form-control" name="solicitud" />​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​</label>
+        </div>
+    </div>
+
+
+    <div style="text-align:center;">
+        <button ng-click="showreclamohechos=true;showreclamosolicitud=false;" class="btn btn-info">Regresar</button>
+        <button ng-click="showreclamosolicitudo=false;showreclamorevisar=true;" class="btn btn-info">Revisar reclamo</button>
+    </div>
+
+
+</div>
+
