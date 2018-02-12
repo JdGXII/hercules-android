@@ -17,11 +17,11 @@
     @using (Html.BeginForm("PresentarReclamo", "Main", FormMethod.Post, new { id = "envio-reclamo", enctype = "multipart/form-data" }))
     {
         <div class="form-group">
-            <input class="form-control" type="text" placeholder="Nombres" name="nombre-demandante" />
-            <input class="form-control" type="text" placeholder="Apellidos" name="apellido-demandante" />
-            <input class="form-control" type="text" placeholder="DNI" name="dni-demandante" />
-            <input class="form-control" type="text" placeholder="Teléfono" name="telefono-demandante" />
-            <input class="form-control" type="text" placeholder="Correo electrónico" name="email-demandante" />
+            <input class="form-control" type="text" placeholder="Nombres" name="nombre-demandante" ng-model="demandante.nombre" value="{{demandante.nombre}}" />
+            <input class="form-control" type="text" placeholder="Apellidos" name="apellido-demandante" ng-model="demandante.apellido" value="{{demandante.apellido}}" />
+            <input class="form-control" type="text" placeholder="DNI" name="dni-demandante" ng-model="demandante.dni" value="{{demandante.dni}}" />
+            <input class="form-control" type="text" placeholder="Teléfono" name="telefono-demandante" ng-model="demandante.telefono" value="{{demandante.telefono}}" />
+            <input class="form-control" type="text" placeholder="Correo electrónico" name="email-demandante" ng-model="demandante.email" value="{{demandante.email}}"/>
         </div>
 
     }
@@ -39,10 +39,10 @@
     <div class="form-group">
 
         <input form="envio-reclamo" data-width="150" data-on="<b>Es empresa</b>" data-off="<b>No es empresa</b>" type="checkbox" checked data-toggle="toggle" name="es-empresa" />
-        <input form="envio-reclamo" class="form-control" type="text" placeholder="Nombre" name="nombre-demandado" />
-        <input form="envio-reclamo" class="form-control" type="text" placeholder="RUC/DNI" name="ruc-demandado" />
-        <input form="envio-reclamo" class="form-control" type="text" placeholder="Teléfono (opcional)" name="telefono-demandado" />
-        <input form="envio-reclamo" class="form-control" type="text" placeholder="Correo electrónico (opcional)" name="email-demandado" />
+        <input value="{{demandado.nombre}}" ng-model="demandado.nombre" form="envio-reclamo" class="form-control" type="text" placeholder="Nombre" name="nombre-demandado" />
+        <input value="{{demandado.ruc}}" ng-model="demandado.ruc" form="envio-reclamo" class="form-control" type="text" placeholder="RUC/DNI" name="ruc-demandado" />
+        <input value="{{demandado.telefono}}" ng-model="demandado.telefono" form="envio-reclamo" class="form-control" type="text" placeholder="Teléfono (opcional)" name="telefono-demandado" />
+        <input value="{{demandado.email}}" ng-model="demandado.email" form="envio-reclamo" class="form-control" type="text" placeholder="Correo electrónico (opcional)" name="email-demandado" />
     </div>
 
    
@@ -59,16 +59,16 @@
 
         <p style="text-align:center;">Sube un vídeo describiendo tu problema</p>
         <label class="btn btn-success btn-block btn-file">
-            <b>+ Añadir video</b> <input style="display: none;" form="envio-reclamo" type="file" name="video-demandante" />
+            <b>+ Añadir video</b> <input ng-click="video=true;" id="video" onchange="previewVideo()" style="display: none;" form="envio-reclamo" type="file" name="video-demandante" ng-model="reclamo.video" />
         </label>
         <br />
-        <p style="text-align:center;">Sube una foto de tu DNI y otros documentos que consideres importantes</p>
+        <p style="text-align:center;">Sube una foto de tu DNI</p>
         <label class="btn btn-success btn-block btn-file">
-            <b>+ Añadir documento</b> <input style="display: none;" form="envio-reclamo" type="file" name="documentos-demandante" />
+            <b>+ Añadir documento</b> <input onchange="previewImage()" id="input-dni" style="display: none;" form="envio-reclamo" type="file" name="documentos-demandante" />
         </label>
         <br />
         <p>¿Deseas añadir algo?</p>
-        <input type="text" form="envio-reclamo" class="form-control" name="comentario-demandante" />
+        <input type="text" form="envio-reclamo" class="form-control" name="comentario-demandante" ng-model="reclamo.comentario" value="{{reclamo.comentario}}" />
 
 
     </div>
@@ -86,22 +86,100 @@
 
         <h3 style="color:blue;text-align:center;">¿Qué esperas obtener con tu reclamo?</h3>
         <div  class="radio">
-            <label><input form="envio-reclamo" type="radio" name="solicitud" value="cambio">Cambio de producto o servicio</label>
+            <label><input ng-click="textfield=false;solicitud.otro = ''" form="envio-reclamo" type="radio" name="solicitud" ng-model="solicitud.seleccion" value="Cambio de producto o servicio">Cambio de producto o servicio</label>
         </div>
         <div class="radio">
-            <label><input form="envio-reclamo" type="radio" name="solicitud" value="indemnizacion">Indemnización 2X1</label>
+            <label><input ng-click="textfield=false; solicitud.otro = ''" form="envio-reclamo" type="radio" name="solicitud" ng-model="solicitud.seleccion" value="Indemnización 2X1">Indemnización 2X1</label>
         </div>
         <div class="radio">
-            <label><input form="envio-reclamo" type="radio" name="solicitud" value="">Otro (específica) <input id="texto-solicitud" type="text" form="envio-reclamo" class="form-control" name="solicitud" />​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​</label>
+            <label><input ng-click="textfield=true;" ng-model="solicitud.seleccion" form="envio-reclamo" type="radio" name="solicitud" value="Otro">Otro (específica) <input ng-show="textfield" ng-model="solicitud.otro"  id="texto-solicitud" type="text" form="envio-reclamo" class="form-control" name="solicitud" />​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​</label>
         </div>
     </div>
 
 
     <div style="text-align:center;">
         <button ng-click="showreclamohechos=true;showreclamosolicitud=false;" class="btn btn-info">Regresar</button>
-        <button ng-click="showreclamosolicitudo=false;showreclamorevisar=true;" class="btn btn-info">Revisar reclamo</button>
+        <button ng-click="showreclamosolicitud=false;showreclamorevisar=true;" class="btn btn-info">Revisar reclamo</button>
     </div>
 
 
 </div>
+
+<div ng-show="showreclamorevisar" class="row">
+
+    <p style="text-align:center;">Asegúrate que todos los datos son correctos</p>
+
+    <h3 style="color:blue;text-align:center;">Demandante</h3>
+    <div class="form-group">
+
+        <input ng-model="demandante.nombre" class="form-control" type="text" value="{{demandante.nombre}}" />
+        <input ng-model="demandante.apellido" class="form-control" type="text" value="{{demandante.apellido}}" />
+        <input ng-model="demandante.dni" class="form-control" type="text" value="{{demandante.dni}}" />
+        <input ng-model="demandante.telefono" class="form-control" type="text" value="{{demandante.telefono}}" />
+        <input ng-model="demandante.email" class="form-control" type="text" value="{{demandante.email}}" />
+        <div style="text-align:center"><img style="width:100%;" id="foto-dni" src="" height="200" /></div>
+    </div>
+
+    <h3 style="color:red;text-align:center;">Demandado</h3>
+    <div class="form-group">
+
+        <input ng-model="demandado.nombre" class="form-control" type="text" value="{{demandado.nombre}}" />
+        <input ng-model="demandado.ruc" class="form-control" type="text" value="{{demandado.ruc}}" />
+        <input ng-model="demandado.telefono" class="form-control" type="text" value="{{demandado.telefono}}" />
+        <input ng-model="demandado.email" class="form-control" type="text" value="{{demandado.email}}" />
+    </div>
+
+    <h3 style="color:blue;text-align:center;">Reclamo</h3>
+    <div class="form-group">
+
+        <div ng-show="video" style="text-align:center;">
+            <video height="200" width="200" controls>
+                <source src="mov_bbb.mp4" type="video/mp4">
+
+
+            </video>
+        </div>
+        <input ng-model="reclamo.comentario" class="form-control" type="text" value="{{reclamo.comentario}}" />
+
+
+    </div>
+
+    <h3 style="color:blue;text-align:center;">Lo que solicitas</h3>
+    <div class="form-group">
+
+        <p style="text-align:center">
+            <b>
+                {{solicitud.seleccion}}
+                <br />
+                {{solicitud.otro}}
+            </b>
+        </p>
+
+
+    </div>
+
+    <h3 style="color:blue;text-align:center;">Términos y Condiciones</h3>
+    <div class="form-group">
+
+        <p style="text-align:center">
+            <b>
+                {{solicitud.seleccion}}
+                <br />
+                {{solicitud.otro}}
+            </b>
+        </p>
+
+
+    </div>
+
+
+
+    <div style="text-align:center;">
+        <button ng-click="showreclamosolicitud=true;showreclamorevisar=false;" class="btn btn-info">Regresar</button>
+        <button ng-click="showreclamosolicitud=false;showreclamorevisar=true;" class="btn btn-info">Enviar</button>
+    </div>
+
+
+</div>
+
 
