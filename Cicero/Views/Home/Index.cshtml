@@ -13,46 +13,46 @@
 </div>
 @using (Html.BeginForm("PresentarReclamo", "Main", FormMethod.Post, new { id = "envio-reclamo", enctype = "multipart/form-data", name = "envioReclamo" }))
 {
-<div ng-show="showreclamodemandante" class="row">
+    <div ng-show="showreclamodemandante" class="row">
 
-    <h3 style="color:blue;text-align:center;">Tus datos</h3>
-    <div class="form-group">
-        <input required class="form-control" type="text" placeholder="Nombres" name="nombre-demandante" ng-model="demandante.nombre" value="{{demandante.nombre}}" />
-        <input class="form-control" type="text" placeholder="Apellidos" name="apellido-demandante" ng-model="demandante.apellido" value="{{demandante.apellido}}" />
-        <input class="form-control" type="text" placeholder="DNI" name="dni-demandante" ng-model="demandante.dni" value="{{demandante.dni}}" />
-        <input class="form-control" type="tel" placeholder="Teléfono" name="telefono-demandante" ng-model="demandante.telefono" value="{{demandante.telefono}}" />
-        <input required class="form-control" type="email" placeholder="Correo electrónico" name="email-demandante" ng-model="demandante.email" value="{{demandante.email}}" />
+        <h3 style="color:blue;text-align:center;">Tus datos</h3>
+        <div class="form-group">
+            <input required class="form-control" type="text" placeholder="Nombres" name="nombre-demandante" ng-model="demandante.nombre" value="{{demandante.nombre}}" />
+            <input class="form-control" type="text" placeholder="Apellidos" name="apellido-demandante" ng-model="demandante.apellido" value="{{demandante.apellido}}" />
+            <input class="form-control" type="text" placeholder="DNI" name="dni-demandante" ng-model="demandante.dni" value="{{demandante.dni}}" />
+            <input class="form-control" type="tel" placeholder="Teléfono" name="telefono-demandante" ng-model="demandante.telefono" value="{{demandante.telefono}}" />
+            <input required class="form-control" type="email" placeholder="Correo electrónico" name="email-demandante" ng-model="demandante.email" value="{{demandante.email}}" />
+        </div>
+
+
+        <div style="text-align:center;">
+            <button type="button" ng-click="hidemain=false;showreclamodemandante=false;" class="btn btn-info">Regresar</button>
+            <button type="button" ng-click="showreclamodemandante=false;showreclamodemandado=true;" class="btn btn-info">Siguiente</button>
+        </div>
+
+
     </div>
 
+    <div ng-show="showreclamodemandado" class="row">
 
-    <div style="text-align:center;">
-        <button type="button" ng-click="hidemain=false;showreclamodemandante=false;" class="btn btn-info">Regresar</button>
-        <button type="button" ng-click="showreclamodemandante=false;showreclamodemandado=true;" class="btn btn-info">Siguiente</button>
+        <h3 style="color:blue;text-align:center;">Datos del demandado</h3>
+        <div class="form-group">
+
+            <input form="envio-reclamo" data-width="150" data-on="<b>Es empresa</b>" data-off="<b>No es empresa</b>" type="checkbox" checked data-toggle="toggle" name="es-empresa" />
+            <input required value="{{demandado.nombre}}" ng-model="demandado.nombre" form="envio-reclamo" class="form-control" type="text" placeholder="Nombre" name="nombre-demandado" />
+            <input value="{{demandado.ruc}}" ng-model="demandado.ruc" form="envio-reclamo" class="form-control" type="text" placeholder="RUC/DNI" name="ruc-demandado" />
+            <input value="{{demandado.telefono}}" ng-model="demandado.telefono" form="envio-reclamo" class="form-control" type="tel" placeholder="Teléfono (opcional)" name="telefono-demandado" />
+            <input value="{{demandado.email}}" ng-model="demandado.email" form="envio-reclamo" class="form-control" type="email" placeholder="Correo electrónico (opcional)" name="email-demandado" />
+        </div>
+
+
+        <div style="text-align:center;">
+            <button type="button" ng-click="showreclamodemandante=true;showreclamodemandado=false;" class="btn btn-info">Regresar</button>
+            <button type="button" ng-click="showreclamodemandado=false;showreclamosolicitud=true;" class="btn btn-info">Siguiente</button>
+        </div>
+
+
     </div>
-
-
-</div>
-
-<div ng-show="showreclamodemandado" class="row">
-
-    <h3 style="color:blue;text-align:center;">Datos del demandado</h3>
-    <div class="form-group">
-
-        <input form="envio-reclamo" data-width="150" data-on="<b>Es empresa</b>" data-off="<b>No es empresa</b>" type="checkbox" checked data-toggle="toggle" name="es-empresa" />
-        <input required value="{{demandado.nombre}}" ng-model="demandado.nombre" form="envio-reclamo" class="form-control" type="text" placeholder="Nombre" name="nombre-demandado" />
-        <input value="{{demandado.ruc}}" ng-model="demandado.ruc" form="envio-reclamo" class="form-control" type="text" placeholder="RUC/DNI" name="ruc-demandado" />
-        <input value="{{demandado.telefono}}" ng-model="demandado.telefono" form="envio-reclamo" class="form-control" type="tel" placeholder="Teléfono (opcional)" name="telefono-demandado" />
-        <input value="{{demandado.email}}" ng-model="demandado.email" form="envio-reclamo" class="form-control" type="email" placeholder="Correo electrónico (opcional)" name="email-demandado" />
-    </div>
-
-
-    <div style="text-align:center;">
-        <button type="button" ng-click="showreclamodemandante=true;showreclamodemandado=false;" class="btn btn-info">Regresar</button>
-        <button type="button" ng-click="showreclamodemandado=false;showreclamosolicitud=true;" class="btn btn-info">Siguiente</button>
-    </div>
-
-
-</div>
 
     <div ng-show="showreclamohechos" class="row">
         <div class="form-group">
@@ -68,7 +68,7 @@
             </label>
             <br />
             <p>¿Deseas añadir algo?</p>
-            <input ng-click="foto=true;" type="text" form="envio-reclamo" class="form-control" name="comentario-demandante" ng-model="reclamo.comentario" value="{{reclamo.comentario}}" />
+            <input type="text" form="envio-reclamo" class="form-control" name="comentario-demandante" ng-model="reclamo.comentario" value="{{reclamo.comentario}}" />
 
 
         </div>
@@ -119,7 +119,7 @@
             <input ng-model="demandante.dni" class="form-control" type="text" value="{{demandante.dni}}" placeholder="DNI" />
             <input ng-model="demandante.telefono" class="form-control" type="tel" value="{{demandante.telefono}}" placeholder="Teléfono" />
             <input ng-model="demandante.email" class="form-control" type="email" value="{{demandante.email}}" placeholder="Correo electrónico (opcional)" />
-            <div ng-show="foto" style="text-align:center"><img style="width:100%;" id="foto-dni" src="" height="200" /></div>
+            <div ng-show="video" id="showFoto2" style="text-align:center;"><img style="width:100%;" id="foto-dni" src="" height="200" /></div>
         </div>
 
         <h3 style="color:red;text-align:center;">Demandado</h3>
@@ -278,3 +278,14 @@
 
 
 }
+
+<script>
+    function showFoto() {
+
+        $(document).ready(function () {
+            $("#showfoto2").show();
+        });
+        
+
+    }
+</script>
