@@ -12,6 +12,7 @@ namespace Cicero.Controllers
     {
         public IActionResult Index()
         {
+            Expediente expediente = new Expediente();
             return View();
         }
 

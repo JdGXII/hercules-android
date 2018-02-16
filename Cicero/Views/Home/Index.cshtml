@@ -10,6 +10,7 @@
     <button type="button" ng-click="hidemain=true;showreclamodemandante=true;" class="btn btn-block btn-info">Presenta tu reclamo</button>
     <button type="button" class="btn btn-block btn-info">Consulta tu reclamo</button>
     <button type="button" class="btn btn-block btn-danger">Chat en vivo</button>
+    
 </div>
 @using (Html.BeginForm("PresentarReclamo", "Main", FormMethod.Post, new { id = "envio-reclamo", enctype = "multipart/form-data", name = "envioReclamo" }))
 {
@@ -17,11 +18,11 @@
 
         <h3 style="color:blue;text-align:center;">Tus datos</h3>
         <div class="form-group">
-            <input required class="form-control" type="text" placeholder="Nombres" name="nombre-demandante" ng-model="demandante.nombre" value="{{demandante.nombre}}" />
-            <input class="form-control" type="text" placeholder="Apellidos" name="apellido-demandante" ng-model="demandante.apellido" value="{{demandante.apellido}}" />
-            <input class="form-control" type="text" placeholder="DNI" name="dni-demandante" ng-model="demandante.dni" value="{{demandante.dni}}" />
-            <input class="form-control" type="tel" placeholder="Teléfono" name="telefono-demandante" ng-model="demandante.telefono" value="{{demandante.telefono}}" />
-            <input required class="form-control" type="email" placeholder="Correo electrónico" name="email-demandante" ng-model="demandante.email" value="{{demandante.email}}" />
+            <input required class="form-control" type="text" placeholder="Nombres" name="nombre_demandante" ng-model="demandante.nombre" value="{{demandante.nombre}}" />
+            <input class="form-control" type="text" placeholder="Apellidos" name="apellido_demandante" ng-model="demandante.apellido" value="{{demandante.apellido}}" />
+            <input class="form-control" type="text" placeholder="DNI" name="dni_demandante" ng-model="demandante.dni" value="{{demandante.dni}}" />
+            <input class="form-control" type="tel" placeholder="Teléfono" name="telefono_demandante" ng-model="demandante.telefono" value="{{demandante.telefono}}" />
+            <input required class="form-control" type="email" placeholder="Correo electrónico" name="email_demandante" ng-model="demandante.email" value="{{demandante.email}}" />
         </div>
 
 
@@ -38,11 +39,11 @@
         <h3 style="color:blue;text-align:center;">Datos del demandado</h3>
         <div class="form-group">
 
-            <input form="envio-reclamo" data-width="150" data-on="<b>Es empresa</b>" data-off="<b>No es empresa</b>" type="checkbox" checked data-toggle="toggle" name="es-empresa" />
-            <input required value="{{demandado.nombre}}" ng-model="demandado.nombre" form="envio-reclamo" class="form-control" type="text" placeholder="Nombre" name="nombre-demandado" />
-            <input value="{{demandado.ruc}}" ng-model="demandado.ruc" form="envio-reclamo" class="form-control" type="text" placeholder="RUC/DNI" name="ruc-demandado" />
-            <input value="{{demandado.telefono}}" ng-model="demandado.telefono" form="envio-reclamo" class="form-control" type="tel" placeholder="Teléfono (opcional)" name="telefono-demandado" />
-            <input value="{{demandado.email}}" ng-model="demandado.email" form="envio-reclamo" class="form-control" type="email" placeholder="Correo electrónico (opcional)" name="email-demandado" />
+            <input form="envio-reclamo" data-width="150" data-on="<b>Es empresa</b>" data-off="<b>No es empresa</b>" type="checkbox" checked data-toggle="toggle" name="es_empresa" />
+            <input required value="{{demandado.nombre}}" ng-model="demandado.nombre" form="envio-reclamo" class="form-control" type="text" placeholder="Nombre" name="nombre_demandado" />
+            <input value="{{demandado.ruc}}" ng-model="demandado.ruc" form="envio-reclamo" class="form-control" type="text" placeholder="RUC/DNI" name="ruc_demandado" />
+            <input value="{{demandado.telefono}}" ng-model="demandado.telefono" form="envio-reclamo" class="form-control" type="tel" placeholder="Teléfono (opcional)" name="telefono_demandado" />
+            <input value="{{demandado.email}}" ng-model="demandado.email" form="envio-reclamo" class="form-control" type="email" placeholder="Correo electrónico (opcional)" name="email_demandado" />
         </div>
 
 
@@ -59,16 +60,16 @@
             <h3 style="color:blue;text-align:center;">Hechos y documentos</h3>
             <p style="text-align:center;">Sube un vídeo describiendo tu problema</p>
             <label class="btn btn-success btn-block btn-file">
-                <b>+ Añadir video</b> <input ng-click="video=true;" id="video" onchange="previewVideo()" style="display: none;" form="envio-reclamo" type="file" name="video-demandante" ng-model="reclamo.video" />
+                <b>+ Añadir video</b> <input ng-click="video=true;" id="video" onchange="previewVideo()" style="display: none;" form="envio-reclamo" type="file" name="video_demandante" ng-model="reclamo.video" />
             </label>
             <br />
             <p style="text-align:center;">Sube una foto de tu DNI</p>
             <label class="btn btn-success btn-block btn-file">
-                <b>+ Añadir documento</b> <input required onchange="previewImage()" id="input-dni" style="display: none;" form="envio-reclamo" type="file" name="documentos-demandante" />
+                <b>+ Añadir documento</b> <input  onchange="previewImage()" id="input-dni" style="display: none;" form="envio-reclamo" type="file" name="documentos_demandante" />
             </label>
             <br />
             <p>¿Deseas añadir algo?</p>
-            <input type="text" form="envio-reclamo" class="form-control" name="comentario-demandante" ng-model="reclamo.comentario" value="{{reclamo.comentario}}" />
+            <input type="text" form="envio-reclamo" class="form-control" name="comentario_demandante" ng-model="reclamo.comentario" value="{{reclamo.comentario}}" />
 
 
         </div>
@@ -162,7 +163,7 @@
 
         <div style="text-align:center;">
             <button type="button" ng-click="showreclamohechos=true;showreclamorevisar=false;" class="btn btn-info">Regresar</button>
-            <button ng-disabled="envioReclamo.$invalid" ng-click="showterminos=false;showreclamohechos=true;" class="btn btn-info">Enviar</button>
+            <button ng-disabled="envioReclamo.$invalid" type="submit" form="envio-reclamo" class="btn btn-info">Enviar</button>
         </div>
     </div>
 
