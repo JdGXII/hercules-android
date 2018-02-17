@@ -1,4 +1,4 @@
-﻿var app = angular.module('ciceroApp', []);
+﻿var app = angular.module('ciceroApp', ['ngAnimate']);
 
 app.controller('mainCtrl', function ($scope) {
 

@@ -8,6 +8,7 @@
 .body-content {
     padding-left: 15px;
     padding-right: 15px;
+    
 }
 
 /* Carousel */
@@ -42,4 +43,40 @@
 .show-foto{
 
     display:none;
+}
+
+.btn-cicero {
+    background-color: #680000;
+    color: white;
+    border-color: #680000;
+    border-radius: 25px;
+    font:bold;
+}
+
+    .btn-cicero:hover,
+    .btn-cicero:focus,
+    .btn-cicero:active {
+        background-color: #730000;
+        color: white;
+        border-color: #730000;
+        border-radius: 25px;
+        font: bold;
+    }
+
+@keyframes myChange {
+    0% {
+        opacity: 1;
+        transform: none;
+
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateX(-100%);
+        /*transform: translate3d(100%, 0, 0);*/
+    }
+}
+
+div.ng-hide {
+    animation: 0.5s myChange;
 }

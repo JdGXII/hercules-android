@@ -4,12 +4,15 @@
 }
 
 
-<div ng-hide="hidemain" class="row">
-
+<div ng-hide="hidemain" class="row" >
+    <div style="text-align:center; color:#680000;"><h1><b>C I C E R O</b></h1></div>
+    <br />
     <img class="center-block logo" src="~/images/Logo Cicero.png" />
-    <button type="button" ng-click="hidemain=true;showreclamodemandante=true;" class="btn btn-block btn-info">Presenta tu reclamo</button>
-    <button type="button" class="btn btn-block btn-info">Consulta tu reclamo</button>
-    <button type="button" class="btn btn-block btn-danger">Chat en vivo</button>
+    <div style="margin-left:50px;margin-right:50px;">
+        <button type="button" ng-click="hidemain=true;showreclamodemandante=true;" class="btn btn-block btn-cicero"><b>Presenta tu reclamo</b></button>
+        <button type="button" class="btn btn-block btn-cicero"><b>Consulta tu reclamo</b></button>
+        <button type="button" class="btn btn-block btn-cicero"><b>Chat en vivo</b></button>
+    </div>
     
 </div>
 @using (Html.BeginForm("PresentarReclamo", "Main", FormMethod.Post, new { id = "envio-reclamo", enctype = "multipart/form-data", name = "envioReclamo" }))
