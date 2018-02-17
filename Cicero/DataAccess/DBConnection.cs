@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 
-namespace AKAWeb_v01.Classes
+namespace Cicero.DataAccess
 {
     //The main difference between the methods that end in "Test" and "Production"
     //is not the source but whether they validate the inputs or parameters from a query
@@ -13,7 +13,7 @@ namespace AKAWeb_v01.Classes
     {
         private SqlDataReader dataReader = null;
         private SqlConnection cnn;
-        private string testString = WebConfigurationManager.ConnectionStrings["A2String"].ToString();
+        private string testString = "Server=tcp:ciceron.database.windows.net,1433;Initial Catalog=cicero_dev;Persist Security Info=False;User ID=ciceron;Password=plusUltra1492;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         public bool WriteToTest(string query)
         {
