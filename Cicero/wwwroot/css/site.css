@@ -63,6 +63,27 @@
         font: bold;
     }
 
+.btn-radio {
+    background-color: white;
+    color: black;
+    border-color: #680000;
+    border-radius: 25px;
+    font: bold;
+}
+
+    .btn-radio:hover,
+    .btn-radio:focus,
+    .btn-radio:active,
+    .btn-radio:visited    {
+        background-color: #5CB85C;
+        color: white;
+        border-color: #5CB85C;
+        border-radius: 25px;
+        font: bold;
+    }
+
+
+
 @keyframes fadeOut {
     0% {
         opacity: 1;
@@ -118,3 +139,10 @@ div.ng-hide-remove {
     height: 100px;
     width: 100px;
 }
+
+.cont input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+}
+

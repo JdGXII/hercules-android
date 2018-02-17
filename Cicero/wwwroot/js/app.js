@@ -37,9 +37,9 @@ function previewVideo() {
     }
 }
 
-function previewImage() {
-    var preview = document.querySelector('#foto-dni');
-    var file = document.querySelector('#input-dni').files[0];
+function previewImage(input_id, display_id) {
+    var preview = document.querySelector(display_id);
+    var file = document.querySelector(input_id).files[0];
     var reader = new FileReader();
 
     reader.onloadend = function () {
