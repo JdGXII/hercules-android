@@ -19,19 +19,129 @@
 {
     <div ng-show="showreclamodemandante" class="row">
 
-        <h3 style="color:blue;text-align:center;">Tus datos</h3>
+        <div class="top-div">
+            
+            <a href="" ng-click="hidemain=false;showreclamodemandante=false;"><span style="float:left;"><i class="glyphicon glyphicon-arrow-left white"></i></span></a>
+           
+            
+                <b>Sube tu DNI</b>
+            
+        
+        </div>
+        <p style="text-align:center">
+            Agrega una foto de tu DNI<br />
+            <label>
+               <img class="input_vector" src="~/images/añadirDNI.png" /><input ng-click="foto=true;" onchange="previewImage()" id="input-dni" style="display: none;" form="envio-reclamo" type="file" name="documentos_demandante" />
+            </label><br />
+            <div ng-show="foto" id="showFoto2" style="text-align:center;"><img style="width:90%;" id="foto-dni" src="" height="200" /></div>
+        </p>
+
         <div class="form-group">
-            <input required class="form-control" type="text" placeholder="Nombres" name="nombre_demandante" ng-model="demandante.nombre" value="{{demandante.nombre}}" />
-            <input class="form-control" type="text" placeholder="Apellidos" name="apellido_demandante" ng-model="demandante.apellido" value="{{demandante.apellido}}" />
-            <input class="form-control" type="text" placeholder="DNI" name="dni_demandante" ng-model="demandante.dni" value="{{demandante.dni}}" />
-            <input class="form-control" type="tel" placeholder="Teléfono" name="telefono_demandante" ng-model="demandante.telefono" value="{{demandante.telefono}}" />
-            <input required class="form-control" type="email" placeholder="Correo electrónico" name="email_demandante" ng-model="demandante.email" value="{{demandante.email}}" />
+
+            <input required class="form-control" type="email" placeholder="Tu correo electrónico" name="email_demandante" ng-model="demandante.email" value="{{demandante.email}}" />
+  
+
+        </div>
+
+        <div style="width:100%;text-align:center;padding:10px;">
+            <h4 style="text-align:center;">Reglamento Cicero</h4>
+            <div style="height:100px;width:100%;border:1px solid #ccc;overflow:auto; text-align:center;border-radius:25px;padding:3px;">
+                <b>REGLAMENTO</b><br>
+
+                <b>DE LA PLATAFORMA Y CLAUSULA ARBITRAL CICERO</b><br>
+
+                <b>1. De la plataforma</b><br>
+                Cicero es la plataforma responsable por la administración de las disputas que serán resueltas de acuerdo con el presente reglamento de arbitraje de conciencia.<br>
+
+                <b>2. Sometimiento de las partes</b><br>
+                Las partes se encontrarán sujetas al sistema digital de resolución de disputas de Cicero, al que hace referencia este Reglamento, solo si han aceptado las siguientes reglas y cambios subsecuentes dentro de la plataforma Cicero.<br>
+
+                <b>3. Comunicaciones</b><br>
+                Todas las comunicaciones entre las partes y Cicero o sus árbitros se harán      exclusivamente a través de Cicero, bien sea a través de su aplicación, su sitio web o correos electrónicos que se remitan a las partes. <br>
+
+                Cualquier comunicación realizada por otro medio, sin intermedio de Cicero, no podrá ser considerada. <br>
+
+                <b>4. Natividad digital</b><br>
+                El arbitraje de acuerdo con estas reglas se llevará a cabo exclusivamente de manera digital.<br>
+
+                <b>DEL PROCEDIMIENTO ARBITRAL MEDIANTE LA PLATAFORMA DIGITAL CICERO</b><br>
+
+                <b>5. Reclamo </b><br>
+                El reclamante registra un reclamo en la aplicación de Cicero, en donde manifestará su aceptación de la cláusula de resolución de controversias mediante arbitraje de conciencia a través de Cicero.<br>
+
+                <b>6. Validación y admisión del reclamo</b><br>
+                Todos los datos, vídeos, fotos y demás información digital enviada por el reclamante, serán revisados y validados por el personal de Cicero. En caso de no existir dudas, el reclamo será admitido. En caso de alguna duda, inexactitud o ampliación de información, Cicero se comunicará inmediatamente con el reclamante. <br>
+
+                <b>7. Respuesta del reclamo</b><br>
+                Admitido el reclamo, Cicero lo enviará junto a sus anexos al reclamado, quien tendrá diez días hábiles para aceptar resolver dicha disputa a través de Cicero, así como enviar su respuesta, mediante la cual absuelve todo aquello que considere necesario para su defensa.
+                A tales efectos, Cicero enviará un enlace al reclamado para que pueda aceptar la cláusula arbitral de Cicero así como subir todos los archivos que considere necesarios para su defensa. <br>
+
+                <b>8. Validación y admisión de la respuesta</b><br>
+                Todos los datos, vídeos, fotos y demás información digital enviada por el reclamado, serán revisados y validados por el personal de Cicero.
+                En caso de no existir dudas, la respuesta será admitida. En caso de alguna duda, inexactitud o ampliación de información, Cicero se comunicará inmediatamente con el reclamado.
+                Validada la información del reclamado, Cicero admitirá la respuesta y procederá a enviarla al reclamante junto a sus anexos.<br>
+
+                <b>9. Mediación</b><br>
+                A lo largo de todo el arbitraje de conciencia, Cicero intentará fungir como mediador entre las partes para que se alcance un común acuerdo entre ellas antes de la decisión por parte del árbitro.<br>
+
+                <b>10. Decisión</b><br>
+                Admitidos el reclamo y la respuesta, Cicero procederá a enviarlos conjuntamente a uno de sus árbitros, el cual será escogido aleatoriamente, para que, en el plazo de cinco días hábiles, resuelva dicha controversia en base a su leal saber y entender, la común intención de las partes y la buena fe.
+                De forma excepcional, el árbitro podrá solicitar más pruebas a las partes, una prórroga en el plazo para resolver o convocar una audiencia única entre él y las partes.<br>
+
+                <b>11. Principio de restitución</b><br>
+                Salvo en casos excepcionales, las partes y los árbitros, así como todos los miembros de la plataforma Cicero, se encuentran gobernados y limitados por el principio 2x1 o principio de restitución, el cual significa que la decisión del árbitro no podrá exceder, por concepto indemnizatorio, un nuevo producto o servicio más la cuantía del producto o servicio reclamado.<br>
+
+                <b>12. Rectificación, interpretación, integración o exclusión en la Decisión </b><br>
+                Enviada la Decisión por el árbitro a Cicero, Cicero validará el contenido de dicha Decisión y la enviará inmediatamente a las partes, quienes tendrán un plazo de tres días hábiles para solicitar cualquier rectificación, interpretación, integración o exclusión que consideren necesario en el mismo.<br>
+
+                <b>DE LOS ARBITROS</b><br>
+
+                <b>13. Lista de Árbitros</b><br>
+                Todas las controversias de Cicero serán resueltas por los árbitros que formen parte de la “lista de árbitros” de la plataforma Cicero.<br>
+
+                <b>14. Ingreso a la Lista de Árbitros</b><br>
+                Cualquier abogado mayor de 30 años podrá solicitar ser árbitro en la plataforma digital Cicero. Para solicitarlo, deberá completar la solicitud dentro de su página web.
+                Enviada la solicitud, Cicero se pondrá en contacto inmediatamente con el solicitante, a quien se le realizará el “examen de ingreso arbitral”.
+                En caso de aprobar el examen de ingreso, el solicitante será admitido como árbitro. En caso de no aprobar, el solicitante podrá volver a intentarlo transcurridos tres meses desde su último rechazo.<br>
+
+                <b>15. Imparcialidad e independencia</b><br>
+                Al aceptar el cargo, el árbitro declara ser totalmente imparcial e independiente respecto del reclamo y de las partes.
+                Las partes o el propio árbitro pueden informar que no se cumple con este último requisito. Cicero decidirá su remoción como árbitro.
+                En caso de remoción del árbitro, o su imposibilidad de continuar con el arbitraje, Cicero elegirá un nuevo árbitro aleatoriamente.<br>
+
+                <b>16. Costas y costos</b><br>
+
+                Las costas y costos serán pagadas por el reclamado, en caso se trate de una empresa. En caso se trate de dos personas particulares, las costas y costos del reclamo deberán ser pagadas a mitades por ambas partes, pudiéndose cualquiera de ellas subrogar en el pago de la otra. <br>
+
+                <b>17. Normas aplicables e idioma</b><br>
+                Los árbitros resolverán la disputa aplicando su leal saber entender, la común intención de las partes y la buena fe.
+                El lenguaje utilizado será el español, salvo pacto en contrario.<br>
+
+                <b>18. Provisiones Finales</b><br>
+                Las partes acuerdan expresamente que no se aplicará supletoriamente el Decreto Legislativo Nº 1071, Decreto Legislativo que norma el arbitraje.
+                Solo se aplicará las normas que no sean indisponibles por las partes.
+                En caso de falta de regla, Cicero decidirá de la manera más favorable y razonable para el desarrollo del arbitraje.
+
+
+            </div>
+            <br />
+            <h4 style="text-align:center;">Cláusula Cicero</h4>
+            <div style="height:170px;width:100%;border:1px solid #ccc;overflow:auto; text-align:center; border-radius:25px; padding:3px;">
+                
+
+                Acepto que todas las controversias, derivadas o relacionadas con el producto/servicio del presente reclamo, sean resueltas mediante arbitraje de conciencia a través de la plataforma digital "Cicero", cuyo reglamento, procedimiento y decisión declaro aceptar en su totalidad.
+
+
+
+            </div>
+            <div class="radio">
+                <label><input ng-click="aceptarclausula=true" required form="envio-reclamo" type="radio" name="clausula" value="acepto">Acepto Cláusula Cicero</label>
+            </div>
         </div>
 
 
         <div style="text-align:center;">
-            <button type="button" ng-click="hidemain=false;showreclamodemandante=false;" class="btn btn-info">Regresar</button>
-            <button type="button" ng-click="showreclamodemandante=false;showreclamodemandado=true;" class="btn btn-info">Siguiente</button>
+            <button ng-disabled="!aceptarclausula" type="button" ng-click="showreclamodemandante=false;showreclamodemandado=true;" class="btn btn-cicero"><b>Siguiente</b></button>
         </div>
 
 
@@ -123,7 +233,7 @@
             <input ng-model="demandante.dni" class="form-control" type="text" value="{{demandante.dni}}" placeholder="DNI" />
             <input ng-model="demandante.telefono" class="form-control" type="tel" value="{{demandante.telefono}}" placeholder="Teléfono" />
             <input ng-model="demandante.email" class="form-control" type="email" value="{{demandante.email}}" placeholder="Correo electrónico (opcional)" />
-            <div ng-show="video" id="showFoto2" style="text-align:center;"><img style="width:100%;" id="foto-dni" src="" height="200" /></div>
+            
         </div>
 
         <h3 style="color:red;text-align:center;">Demandado</h3>
@@ -171,7 +281,7 @@
     </div>
 
     <div ng-show="showterminos">
-        <h3 style="color:blue;text-align:center;">Normas Cicero</h3>
+        <h3 style="color:blue;text-align:center;">Reglamento Cicero</h3>
         <div class="form-group">
             <div style="height:100px;width:100%;border:1px solid #ccc;overflow:auto; text-align:center">
                 <b>REGLAMENTO</b><br>
@@ -259,7 +369,7 @@
             <div style="height:80px;width:100%;border:1px solid #ccc;overflow:auto; text-align:center">
                 <b>CLAUSULA MODELO</b><br>
 
-                Acepto que todas las controversias, derivadas o relacionadas con el producto/servicio del presente reclamo, sean resueltas mediante arbitraje de conciencia a través de la plataforma digital "Cicero", a cuyo reglamento, procedimiento y decisión declaro aceptar en su totalidad e integridad.
+                Acepto que todas las controversias, derivadas o relacionadas con el producto/servicio del presente reclamo, sean resueltas mediante arbitraje de conciencia a través de la plataforma digital "Cicero", cuyo reglamento, procedimiento y decisión declaro aceptar en su totalidad.
 
 
 
