@@ -93,7 +93,7 @@
 
             <label>
                 <img class="input_vector" src="~/images/anadirArchivo.png" />
-                <input style="display: none;" form="envio-respuesta" type="file" name="poder_legal" />
+                <input required style="display: none;" form="envio-respuesta" type="file" name="poder_legal" />
             </label>
 
 
@@ -103,7 +103,7 @@
             Agrega una foto de tu DNI<br />
             <label>
                 <img class="input_vector" src="~/images/añadirDNI.png" />
-                <input ng-click="foto3=true;" onchange="previewImage('#input-dni-representante','#foto-dni-representante')" id="input-dni-representante" style="display: none;" form="envio-respuesta" type="file" name="poder_legal" />
+                <input required ng-click="foto3=true;" onchange="previewImage('#input-dni-representante','#foto-dni-representante')" id="input-dni-representante" style="display: none;" form="envio-respuesta" type="file" name="poder_legal" />
 
             </label>
             <div ng-show="foto3" style="text-align:center;"><img style="width:90%;" id="foto-dni-representante" src="" height="200" /></div>
@@ -260,14 +260,14 @@
         <div class="row" style="margin-top:5px;">
             <p style="text-align:center;">¿Deseas añadir algo? (Opcional)</p>
             <div style="text-align:center">
-                <textarea form="envio-reclamo" class="form-control" name="comentario_demandado"></textarea>
+                <textarea form="envio-respuesta" class="form-control" name="comentario_demandado"></textarea>
             </div>
 
         </div>
 
         <div style="text-align:center; margin-top:7px;" class="row;">
 
-            <button ng-disabled="envioRepuesta.$invalid" type="submit" form="envio-reclamo" class="btn btn-cicero"><span class="glyphicon glyphicon-send white"></span><b> Enviar</b></button>
+            <button ng-disabled="envioRepuesta.$invalid" type="submit" form="envio-respuesta" class="btn btn-cicero"><span class="glyphicon glyphicon-send white"></span><b> Enviar</b></button>
         </div>
 
 
@@ -294,7 +294,7 @@
         <p style="text-align:center">
             Agrega una foto de tu DNI<br />
             <label>
-                <img class="input_vector" src="~/images/añadirDNI.png" /><input ng-click="foto=true;" onchange="previewImage('#input-dni','#foto-dni')" id="input-dni" style="display: none;" form="envio-reclamo" type="file" name="demandante_dni" />
+                <img class="input_vector" src="~/images/añadirDNI.png" /><input required ng-click="foto=true;" onchange="previewImage('#input-dni','#foto-dni')" id="input-dni" style="display: none;" form="envio-reclamo" type="file" name="demandante_dni" />
             </label><br />
             <div ng-show="foto" id="showFoto2" style="text-align:center;"><img style="width:90%;" id="foto-dni" src="" height="200" /></div>
         </p>
@@ -427,7 +427,7 @@
 
 
             <input required value="{{demandado.nombre}}" ng-model="demandado.nombre" form="envio-reclamo" class="form-control" type="text" placeholder="Nombre de la empresa reclamada" name="demandante_nombre_demandado" />
-            <input value="{{demandado.ruc}}" ng-model="demandado.ruc" form="envio-reclamo" class="form-control" type="text" placeholder="Dirección de la empresa reclamada" name="demandante_direccion_demandado" />
+            <input required value="{{demandado.ruc}}" ng-model="demandado.ruc" form="envio-reclamo" class="form-control" type="text" placeholder="Dirección de la empresa reclamada" name="demandante_direccion_demandado" />
 
         </div>
         <div class="row">
@@ -436,7 +436,7 @@
                 <br />
                 <div class="col-xs-6" style="text-align:center;">
                     <label>
-                        <img class="input_vector" src="~/images/anadirVideo.png" /><input ng-click="video=true;" id="video" onchange="previewVideo('#video', '#video_reclamo')" style="display: none;" form="envio-reclamo" type="file" name="demandante_video" ng-model="reclamo.video" />
+                        <img class="input_vector" src="~/images/anadirVideo.png" /><input required ng-click="video=true;" id="video" onchange="previewVideo('#video', '#video_reclamo')" style="display: none;" form="envio-reclamo" type="file" name="demandante_video" ng-model="reclamo.video" />
                     </label><br />
                     <div ng-show="video"  style="text-align:center;">
                         <video id="video_reclamo" style="height:200px; width:90%;" controls>
@@ -463,7 +463,7 @@
 
 
 
-                <label class="btn btn-block btn-success " ng-click="textfield=false; solicitud.otro = ''"><input form="envio-reclamo" type="radio" name="solicitud" ng-model="solicitud.seleccion" value="Cambio de producto o servicio">Cambio de producto o servicio</label>
+                <label class="btn btn-block btn-success " ng-click="textfield=false; solicitud.otro = ''"><input required form="envio-reclamo" type="radio" name="solicitud" ng-model="solicitud.seleccion" value="Cambio de producto o servicio">Cambio de producto o servicio</label>
 
 
                 <label class="btn btn-block btn-success " ng-click="textfield=false; solicitud.otro = ''"><input form="envio-reclamo" type="radio" name="solicitud" ng-model="solicitud.seleccion" value="Indemnización 2X1">Indemnización 2X1</label>
