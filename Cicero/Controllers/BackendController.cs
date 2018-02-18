@@ -23,9 +23,9 @@ namespace Cicero.Controllers
         [HttpPost]
         public IActionResult Login(string usuario, string password)
         {
-            if(usuario == "cicero" && password == "cicero")
+            if(this.usuario == "cicero" && this.password == "cicero")
             {
-                login = true;
+                this.login = true;
                 return RedirectToAction("ListaExpedientes");
             }
             else
@@ -94,28 +94,30 @@ namespace Cicero.Controllers
 
         public IActionResult ListaExpedientes()
         {
-            if (login)
+            var modelo = getExpedientes();
+            return View(modelo);
+            /*if (login)
             {
-                var modelo = getExpedientes();
-                return View(modelo);
+
             }
             else
             {
                 return RedirectToAction("Index");
-            }
+            }*/
         }
 
         public IActionResult VerExpediente(string id)
         {
-            if (login)
+            var modelo = getExpediente(id);
+            return View(modelo);
+            /*if (login)
             {
-                var modelo = getExpediente(id);
-                return View(modelo);
+
             }
             else
             {
                 return RedirectToAction("Index");
-            }
+            }*/
         }
     }
     

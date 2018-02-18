@@ -8,7 +8,7 @@
 <div class="row">
     <h2>Expediente Numero: @Model.codigo_expediente</h2>
     <br />
-    <h2>DNI reclamante: <img style="height:400px; width:100%" src="@Url.Content(Model.demandante_dni)" /></h2>
+    <h2>DNI reclamante: <a href="@Url.Content(Model.demandante_dni)"><img style="height:400px; width:100%" src="@Url.Content(Model.demandante_dni)" /></a></h2>
     <br />
     <h2>Email reclamante: @Model.demandante_email</h2>
     <h2>
