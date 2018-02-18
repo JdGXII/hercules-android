@@ -81,5 +81,17 @@ namespace Cicero.Controllers
         {
             return RedirectToAction("Index", "Home");
         }
+
+        public string getExpediente(string expediente)
+        {
+            if(expediente != "1234")
+            {
+                return "<p style='text-align:center'>Reclamo no encontrado. Porfavor revise el numero expediente e intente de nuevo</p>";
+            }
+            else
+            {
+                return "<p style='text-align:center'>El status de tu reclamo es: en verificacion</p>"; 
+            }
+        }
     }
 }

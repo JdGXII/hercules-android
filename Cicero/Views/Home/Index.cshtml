@@ -4,34 +4,297 @@
 }
 
 
-<div ng-hide="hidemain" class="row" >
+<div ng-hide="hidemain" class="row">
     <div style="text-align:center; color:#680000;"><h1><b>C I C E R O</b></h1></div>
     <br />
     <img class="center-block logo" src="~/images/Logo Cicero.png" />
     <div style="margin-left:50px;margin-right:50px;">
         <button type="button" ng-click="hidemain=true;showreclamodemandante=true;" class="btn btn-block btn-cicero"><b>Presenta tu reclamo</b></button>
-        <button type="button" class="btn btn-block btn-cicero"><b>Consulta tu reclamo</b></button>
-        <button type="button" class="btn btn-block btn-cicero"><b>Chat en vivo</b></button>
+        <button type="button" ng-click="hidemain=true;showreconsultarreclamo=true;" class="btn btn-block btn-cicero"><b>Consulta tu reclamo</b></button>
+        <button type="button" ng-click="hidemain=true;showrevisarexpediente=true;" class="btn btn-block btn-cicero"><b>Responde a un reclamo</b></button>
+        
     </div>
-    
+
 </div>
+
+<div ng-show="showreconsultarreclamo" class="row">
+
+    <div class="top-div">
+
+        <a href="" onclick="borrarReclamo()" ng-click="hidemain=false;showreconsultarreclamo=false;"><span style="float:left;"><i class="glyphicon glyphicon-arrow-left white"></i></span></a>
+
+
+        <b>Revisar reclamo</b>
+
+
+    </div>
+    <div class="form-group">
+        <form name="consultar-reclamo">
+            <input required class="form-control" type="text" id="numExpediente" name="numero_expediente" placeholder="Ingresa número de expediente" />
+
+            <br />
+            <div style="margin-left:50px; margin-right:50px;">
+                <button ng-disabled="consultar-reclamo.$invalid" onclick="getExpediente()" type="button" class="btn btn-block btn-cicero"><b>Revisar</b></button>
+            </div>
+        </form>
+    </div>
+    <div id="resultado" style="display:none;"></div>
+
+
+</div>
+
+
+
+<div ng-show="showrevisarexpediente" class="row">
+
+    <div class="top-div">
+
+        <a href="" ng-click="hidemain=false;showrevisarexpediente=false;"><span style="float:left;"><i class="glyphicon glyphicon-arrow-left white"></i></span></a>
+
+
+        <b>Revisar reclamo</b>
+
+
+    </div>
+    <div class="form-group">
+        <form name="forma">
+            <input required class="form-control" type="text" id="numExpediente" name="numero_expediente" placeholder="Ingresa número de expediente" />
+
+            <br />
+            <div style="margin-left:50px; margin-right:50px;">
+                <button ng-disabled="forma.$invalid" ng-click="showrevisarexpediente=false;showsubirpoderlegal=true;" onclick="getExpediente()" type="button" class="btn btn-block btn-cicero"><b>Revisar</b></button>
+            </div>
+        </form>
+    </div>
+
+
+</div>
+@using (Html.BeginForm("SubirRespuestaReclamo", "Main", new { id = "envio-respuesta", enctype = "multipart/form-data", name = "envioRepuesta" }))
+{
+    <div ng-show="showsubirpoderlegal" class="row">
+
+        <div class="top-div">
+
+            <a href="" ng-click="showsubirpoderlegal=false;showrevisarexpediente=true;"><span style="float:left;"><i class="glyphicon glyphicon-arrow-left white"></i></span></a>
+
+
+            <b>
+                Verificación
+            </b>
+        </div>
+
+
+        <p style="text-align:center;">
+            Agrega tu
+            poder de representación
+            <br />
+            <br />
+
+
+            <label>
+                <img class="input_vector" src="~/images/anadirArchivo.png" />
+                <input style="display: none;" form="envio-respuesta" type="file" name="poder_legal" />
+            </label>
+
+
+        </p>
+
+        <p style="text-align:center;">
+            Agrega una foto de tu DNI<br />
+            <label>
+                <img class="input_vector" src="~/images/añadirDNI.png" />
+                <input ng-click="foto3=true;" onchange="previewImage('#input-dni-representante','#foto-dni-representante')" id="input-dni-representante" style="display: none;" form="envio-respuesta" type="file" name="poder_legal" />
+
+            </label>
+            <div ng-show="foto3" style="text-align:center;"><img style="width:90%;" id="foto-dni-representante" src="" height="200" /></div>
+        </p>
+
+        <div style="width:100%;text-align:center;padding:10px;">
+            <h4 style="text-align:center;">Reglamento Cicero</h4>
+            <div style="height:100px;width:100%;border:1px solid #ccc;overflow:auto; text-align:center;border-radius:25px;padding:3px;">
+                <b>REGLAMENTO</b><br>
+
+                <b>DE LA PLATAFORMA Y CLAUSULA ARBITRAL CICERO</b><br>
+
+                <b>1. De la plataforma</b><br>
+                Cicero es la plataforma responsable por la administración de las disputas que serán resueltas de acuerdo con el presente reglamento de arbitraje de conciencia.<br>
+
+                <b>2. Sometimiento de las partes</b><br>
+                Las partes se encontrarán sujetas al sistema digital de resolución de disputas de Cicero, al que hace referencia este Reglamento, solo si han aceptado las siguientes reglas y cambios subsecuentes dentro de la plataforma Cicero.<br>
+
+                <b>3. Comunicaciones</b><br>
+                Todas las comunicaciones entre las partes y Cicero o sus árbitros se harán      exclusivamente a través de Cicero, bien sea a través de su aplicación, su sitio web o correos electrónicos que se remitan a las partes. <br>
+
+                Cualquier comunicación realizada por otro medio, sin intermedio de Cicero, no podrá ser considerada. <br>
+
+                <b>4. Natividad digital</b><br>
+                El arbitraje de acuerdo con estas reglas se llevará a cabo exclusivamente de manera digital.<br>
+
+                <b>DEL PROCEDIMIENTO ARBITRAL MEDIANTE LA PLATAFORMA DIGITAL CICERO</b><br>
+
+                <b>5. Reclamo </b><br>
+                El reclamante registra un reclamo en la aplicación de Cicero, en donde manifestará su aceptación de la cláusula de resolución de controversias mediante arbitraje de conciencia a través de Cicero.<br>
+
+                <b>6. Validación y admisión del reclamo</b><br>
+                Todos los datos, vídeos, fotos y demás información digital enviada por el reclamante, serán revisados y validados por el personal de Cicero. En caso de no existir dudas, el reclamo será admitido. En caso de alguna duda, inexactitud o ampliación de información, Cicero se comunicará inmediatamente con el reclamante. <br>
+
+                <b>7. Respuesta del reclamo</b><br>
+                Admitido el reclamo, Cicero lo enviará junto a sus anexos al reclamado, quien tendrá diez días hábiles para aceptar resolver dicha disputa a través de Cicero, así como enviar su respuesta, mediante la cual absuelve todo aquello que considere necesario para su defensa.
+                A tales efectos, Cicero enviará un enlace al reclamado para que pueda aceptar la cláusula arbitral de Cicero así como subir todos los archivos que considere necesarios para su defensa. <br>
+
+                <b>8. Validación y admisión de la respuesta</b><br>
+                Todos los datos, vídeos, fotos y demás información digital enviada por el reclamado, serán revisados y validados por el personal de Cicero.
+                En caso de no existir dudas, la respuesta será admitida. En caso de alguna duda, inexactitud o ampliación de información, Cicero se comunicará inmediatamente con el reclamado.
+                Validada la información del reclamado, Cicero admitirá la respuesta y procederá a enviarla al reclamante junto a sus anexos.<br>
+
+                <b>9. Mediación</b><br>
+                A lo largo de todo el arbitraje de conciencia, Cicero intentará fungir como mediador entre las partes para que se alcance un común acuerdo entre ellas antes de la decisión por parte del árbitro.<br>
+
+                <b>10. Decisión</b><br>
+                Admitidos el reclamo y la respuesta, Cicero procederá a enviarlos conjuntamente a uno de sus árbitros, el cual será escogido aleatoriamente, para que, en el plazo de cinco días hábiles, resuelva dicha controversia en base a su leal saber y entender, la común intención de las partes y la buena fe.
+                De forma excepcional, el árbitro podrá solicitar más pruebas a las partes, una prórroga en el plazo para resolver o convocar una audiencia única entre él y las partes.<br>
+
+                <b>11. Principio de restitución</b><br>
+                Salvo en casos excepcionales, las partes y los árbitros, así como todos los miembros de la plataforma Cicero, se encuentran gobernados y limitados por el principio 2x1 o principio de restitución, el cual significa que la decisión del árbitro no podrá exceder, por concepto indemnizatorio, un nuevo producto o servicio más la cuantía del producto o servicio reclamado.<br>
+
+                <b>12. Rectificación, interpretación, integración o exclusión en la Decisión </b><br>
+                Enviada la Decisión por el árbitro a Cicero, Cicero validará el contenido de dicha Decisión y la enviará inmediatamente a las partes, quienes tendrán un plazo de tres días hábiles para solicitar cualquier rectificación, interpretación, integración o exclusión que consideren necesario en el mismo.<br>
+
+                <b>DE LOS ARBITROS</b><br>
+
+                <b>13. Lista de Árbitros</b><br>
+                Todas las controversias de Cicero serán resueltas por los árbitros que formen parte de la “lista de árbitros” de la plataforma Cicero.<br>
+
+                <b>14. Ingreso a la Lista de Árbitros</b><br>
+                Cualquier abogado mayor de 30 años podrá solicitar ser árbitro en la plataforma digital Cicero. Para solicitarlo, deberá completar la solicitud dentro de su página web.
+                Enviada la solicitud, Cicero se pondrá en contacto inmediatamente con el solicitante, a quien se le realizará el “examen de ingreso arbitral”.
+                En caso de aprobar el examen de ingreso, el solicitante será admitido como árbitro. En caso de no aprobar, el solicitante podrá volver a intentarlo transcurridos tres meses desde su último rechazo.<br>
+
+                <b>15. Imparcialidad e independencia</b><br>
+                Al aceptar el cargo, el árbitro declara ser totalmente imparcial e independiente respecto del reclamo y de las partes.
+                Las partes o el propio árbitro pueden informar que no se cumple con este último requisito. Cicero decidirá su remoción como árbitro.
+                En caso de remoción del árbitro, o su imposibilidad de continuar con el arbitraje, Cicero elegirá un nuevo árbitro aleatoriamente.<br>
+
+                <b>16. Costas y costos</b><br>
+
+                Las costas y costos serán pagadas por el reclamado, en caso se trate de una empresa. En caso se trate de dos personas particulares, las costas y costos del reclamo deberán ser pagadas a mitades por ambas partes, pudiéndose cualquiera de ellas subrogar en el pago de la otra. <br>
+
+                <b>17. Normas aplicables e idioma</b><br>
+                Los árbitros resolverán la disputa aplicando su leal saber entender, la común intención de las partes y la buena fe.
+                El lenguaje utilizado será el español, salvo pacto en contrario.<br>
+
+                <b>18. Provisiones Finales</b><br>
+                Las partes acuerdan expresamente que no se aplicará supletoriamente el Decreto Legislativo Nº 1071, Decreto Legislativo que norma el arbitraje.
+                Solo se aplicará las normas que no sean indisponibles por las partes.
+                En caso de falta de regla, Cicero decidirá de la manera más favorable y razonable para el desarrollo del arbitraje.
+
+
+            </div>
+            <br />
+            <h4 style="text-align:center;">Cláusula Cicero</h4>
+            <div style="height:170px;width:100%;border:1px solid #ccc;overflow:auto; text-align:center; border-radius:25px; padding:3px;">
+
+
+                Acepto que todas las controversias, derivadas o relacionadas con el producto/servicio del presente reclamo, sean resueltas mediante arbitraje de conciencia a través de la plataforma digital "Cicero", cuyo reglamento, procedimiento y decisión declaro aceptar en su totalidad.
+
+
+
+            </div>
+            <div class="radio">
+                <label><input ng-click="aceptarclausula2=true" required form="envio-reclamo" type="radio" name="clausula" value="acepto">Acepto Cláusula Cicero</label>
+            </div>
+        </div>
+
+
+
+        <div style="text-align:center;">
+            <button ng-disabled="!aceptarclausula2" type="button" ng-click="showsubirpoderlegal=false;showresponderreclamo=true;" class="btn btn-cicero"><b>Siguiente</b></button>
+        </div>
+
+    </div>
+
+    <div ng-show="showresponderreclamo" class="row">
+
+
+
+        <div class="top-div">
+
+            <a href="" ng-click="showsubirpoderlegal=true;showresponderreclamo=false;"><span style="float:left;"><i class="glyphicon glyphicon-arrow-left white"></i></span></a>
+
+
+            <b>
+                Responde al reclamo
+            </b>
+
+
+        </div>
+
+        <div class="row">
+            <p style="text-align:center">
+                Cuenta los hechos o adjunta pruebas
+                <br />
+                <div class="col-xs-6" style="text-align:center;">
+                    <label>
+                        <img class="input_vector" src="~/images/anadirVideo.png" /><input ng-click="video=true;" id="video" onchange="previewVideo()" style="display: none;" form="envio-reclamo" type="file" name="video_demandado" ng-model="reclamo.video" />
+                    </label><br />
+                    <div ng-show="video" style="text-align:center;">
+                        <video style="height:200px; width:90%;" controls>
+                            <source src="mov_bbb.mp4" type="video/mp4">
+
+
+                        </video>
+                    </div>
+                </div>
+                <div class="col-xs-6" style="text-align:center;">
+                    <label>
+                        <img class="input_vector" src="~/images/anadirFoto.png" /><input ng-click="foto-demandado=true" onchange="previewImage('#input-pruebas-demandado','#foto-pruebas-demandado')" id="input-pruebas-demandado" style="display: none;" form="envio-reclamo" type="file" name="documentos_demandado" />
+                    </label><br />
+                    <div ng-show="video" style="text-align:center;"><img style="width:90%;" id="foto-pruebas-demandado" src="" height="200" /></div>
+                </div>
+            </p>
+        </div>
+
+
+
+
+        <div class="row" style="margin-top:5px;">
+            <p style="text-align:center;">¿Deseas añadir algo? (Opcional)</p>
+            <div style="text-align:center">
+                <textarea form="envio-reclamo" class="form-control" name="comentario_demandado"></textarea>
+            </div>
+
+        </div>
+
+        <div style="text-align:center; margin-top:7px;" class="row;">
+
+            <button ng-disabled="envioRepuesta.$invalid" type="submit" form="envio-reclamo" class="btn btn-cicero"><span class="glyphicon glyphicon-send white"></span><b> Enviar</b></button>
+        </div>
+
+
+
+
+
+
+    </div>
+}
+
 @using (Html.BeginForm("PresentarReclamo", "Main", FormMethod.Post, new { id = "envio-reclamo", enctype = "multipart/form-data", name = "envioReclamo" }))
 {
     <div ng-show="showreclamodemandante" class="row">
 
         <div class="top-div">
-            
+
             <a href="" ng-click="hidemain=false;showreclamodemandante=false;"><span style="float:left;"><i class="glyphicon glyphicon-arrow-left white"></i></span></a>
-           
-            
-                <b>Sube tu DNI</b>
-            
-        
+
+
+            <b>Sube tu DNI</b>
+
+
         </div>
         <p style="text-align:center">
             Agrega una foto de tu DNI<br />
             <label>
-               <img class="input_vector" src="~/images/añadirDNI.png" /><input ng-click="foto=true;" onchange="previewImage('#input-dni','#foto-dni')" id="input-dni" style="display: none;" form="envio-reclamo" type="file" name="documentos_demandante" />
+                <img class="input_vector" src="~/images/añadirDNI.png" /><input ng-click="foto=true;" onchange="previewImage('#input-dni','#foto-dni')" id="input-dni" style="display: none;" form="envio-reclamo" type="file" name="documentos_demandante" />
             </label><br />
             <div ng-show="foto" id="showFoto2" style="text-align:center;"><img style="width:90%;" id="foto-dni" src="" height="200" /></div>
         </p>
@@ -39,7 +302,7 @@
         <div class="form-group">
 
             <input required class="form-control" type="email" placeholder="Tu correo electrónico" name="email_demandante" ng-model="demandante.email" value="{{demandante.email}}" />
-  
+
 
         </div>
 
@@ -127,7 +390,7 @@
             <br />
             <h4 style="text-align:center;">Cláusula Cicero</h4>
             <div style="height:170px;width:100%;border:1px solid #ccc;overflow:auto; text-align:center; border-radius:25px; padding:3px;">
-                
+
 
                 Acepto que todas las controversias, derivadas o relacionadas con el producto/servicio del presente reclamo, sean resueltas mediante arbitraje de conciencia a través de la plataforma digital "Cicero", cuyo reglamento, procedimiento y decisión declaro aceptar en su totalidad.
 
@@ -176,7 +439,7 @@
                         <img class="input_vector" src="~/images/anadirVideo.png" /><input ng-click="video=true;" id="video" onchange="previewVideo()" style="display: none;" form="envio-reclamo" type="file" name="video_demandante" ng-model="reclamo.video" />
                     </label><br />
                     <div ng-show="video" style="text-align:center;">
-                        <video style="height:200px; width:90%;"  controls>
+                        <video style="height:200px; width:90%;" controls>
                             <source src="mov_bbb.mp4" type="video/mp4">
 
 
@@ -187,7 +450,7 @@
                     <label>
                         <img class="input_vector" src="~/images/anadirFoto.png" /><input ng-click="foto2=true;" onchange="previewImage('#input-pruebas','#foto-pruebas')" id="input-pruebas" style="display: none;" form="envio-reclamo" type="file" name="documentos_demandante" />
                     </label><br />
-                    <div ng-show="foto2"  style="text-align:center;"><img style="width:90%;" id="foto-pruebas" src="" height="200" /></div>
+                    <div ng-show="foto2" style="text-align:center;"><img style="width:90%;" id="foto-pruebas" src="" height="200" /></div>
                 </div>
             </p>
         </div>
@@ -196,14 +459,14 @@
         <div class="row" style="margin-top:5px;">
 
             <p style="text-align:center;">¿Qué solicitas?</p>
-            <div class="btn-group" data-toggle="buttons" >
+            <div class="btn-group" data-toggle="buttons">
 
 
 
-                <label class="btn btn-block btn-success " ng-click="textfield=false; solicitud.otro = ''"><input  form="envio-reclamo" type="radio" name="solicitud" ng-model="solicitud.seleccion" value="Cambio de producto o servicio">Cambio de producto o servicio</label>
+                <label class="btn btn-block btn-success " ng-click="textfield=false; solicitud.otro = ''"><input form="envio-reclamo" type="radio" name="solicitud" ng-model="solicitud.seleccion" value="Cambio de producto o servicio">Cambio de producto o servicio</label>
 
 
-                <label class="btn btn-block btn-success " ng-click="textfield=false; solicitud.otro = ''"><input  form="envio-reclamo" type="radio" name="solicitud" ng-model="solicitud.seleccion" value="Indemnización 2X1">Indemnización 2X1</label>
+                <label class="btn btn-block btn-success " ng-click="textfield=false; solicitud.otro = ''"><input form="envio-reclamo" type="radio" name="solicitud" ng-model="solicitud.seleccion" value="Indemnización 2X1">Indemnización 2X1</label>
 
 
                 <label class="btn btn-block btn-success " ng-click="textfield=true;"><input ng-model="solicitud.seleccion" form="envio-reclamo" type="radio" name="solicitud" value="Otro">Otro (específica) </label>
@@ -220,236 +483,16 @@
             </div>
 
         </div>
-        
-            <div style="text-align:center; margin-top:7px;" class="row;">
 
-                <button type="button" ng-click="showreclamodemandado=false;showreclamosolicitud=true;" class="btn btn-cicero"><span class="glyphicon glyphicon-send white"></span><b> Enviar</b></button>
-            </div>
-       
+        <div style="text-align:center; margin-top:7px;" class="row;">
 
-    </div>
-
-    <div ng-show="showreclamohechos" class="row">
-        <div class="form-group">
-            <h3 style="color:blue;text-align:center;">Hechos y documentos</h3>
-            <p style="text-align:center;">Sube un vídeo describiendo tu problema</p>
-            <label class="btn btn-success btn-block btn-file">
-                <b>+ Añadir video</b> <input ng-click="video=true;" id="video" onchange="previewVideo()" style="display: none;" form="envio-reclamo" type="file" name="video_demandante" ng-model="reclamo.video" />
-            </label>
-            <br />
-            <p style="text-align:center;">Sube una foto de tu DNI</p>
-            <label class="btn btn-success btn-block btn-file">
-                <b>+ Añadir documento</b> <input  onchange="previewImage()" id="input-dni" style="display: none;" form="envio-reclamo" type="file" name="documentos_demandante" />
-            </label>
-            <br />
-            <p>¿Deseas añadir algo?</p>
-            <input type="text" form="envio-reclamo" class="form-control" name="comentario_demandante" ng-model="reclamo.comentario" value="{{reclamo.comentario}}" />
-
-
-        </div>
-
-
-        <div style="text-align:center;">
-            
-            <button type="button" ng-click="showreclamohechos=false;showreclamorevisar=true;" class="btn btn-cicero">Enviar</button>
-        </div>
-    </div>
-
-    <div ng-show="showreclamosolicitud" class="row">
-
-        <h3 style="color:blue;text-align:center;">¿Qué solicitas?</h3>
-        <div class="form-group">
-
-            <p style="text-align:center;">¿Qué esperas obtener con tu reclamo</p>
-            <div class="radio">
-                <label><input required ng-click="textfield=false;solicitud.otro = ''" form="envio-reclamo" type="radio" name="solicitud" ng-model="solicitud.seleccion" value="Cambio de producto o servicio">Cambio de producto o servicio</label>
-            </div>
-            <div class="radio">
-                <label><input ng-click="textfield=false; solicitud.otro = ''" form="envio-reclamo" type="radio" name="solicitud" ng-model="solicitud.seleccion" value="Indemnización 2X1">Indemnización 2X1</label>
-            </div>
-            <div class="radio">
-                <label><input ng-click="textfield=true;" ng-model="solicitud.seleccion" form="envio-reclamo" type="radio" name="solicitud" value="Otro">Otro (específica) <input ng-show="textfield" ng-model="solicitud.otro" id="texto-solicitud" type="text" form="envio-reclamo" class="form-control" name="solicitud" />​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​​</label>
-            </div>
-        </div>
-
-
-        <div style="text-align:center;">
-            <button type="button" ng-click="showreclamodemandado=true;showreclamosolicitud=false;" class="btn btn-info">Regresar</button>
-            <button type="button" ng-click="showreclamosolicitud=false;showterminos=true;" class="btn btn-info">Siguiente</button>
+            <button ng-disabled="envioReclamo.$invalid" type="submit" form="envio-reclamo" class="btn btn-cicero"><span class="glyphicon glyphicon-send white"></span><b> Enviar</b></button>
         </div>
 
 
     </div>
 
-    <div ng-show="showreclamorevisar" class="row">
 
-        <h3 style="color:blue;text-align:center;">Revisa tu reclamo</h3>
-        <p style="text-align:center;">Asegúrate que todos los datos son correctos</p>
-
-        <h3 style="color:blue;text-align:center;">Demandante</h3>
-        <div class="form-group">
-
-            <input ng-model="demandante.nombre" class="form-control" type="text" value="{{demandante.nombre}}" placeholder="Nombres" />
-            <input ng-model="demandante.apellido" class="form-control" type="text" value="{{demandante.apellido}}" placeholder="Apellidos" />
-            <input ng-model="demandante.dni" class="form-control" type="text" value="{{demandante.dni}}" placeholder="DNI" />
-            <input ng-model="demandante.telefono" class="form-control" type="tel" value="{{demandante.telefono}}" placeholder="Teléfono" />
-            <input ng-model="demandante.email" class="form-control" type="email" value="{{demandante.email}}" placeholder="Correo electrónico (opcional)" />
-            
-        </div>
-
-        <h3 style="color:red;text-align:center;">Demandado</h3>
-        <div class="form-group">
-
-            <input ng-model="demandado.nombre" class="form-control" type="text" value="{{demandado.nombre}}" placeholder="Nombre" />
-            <input ng-model="demandado.ruc" class="form-control" type="text" value="{{demandado.ruc}}" placeholder="RUC/DNI" />
-            <input ng-model="demandado.telefono" class="form-control" type="tel" value="{{demandado.telefono}}" placeholder="Teléfono" />
-            <input ng-model="demandado.email" class="form-control" type="email" value="{{demandado.email}}" placeholder="Correo electrónico (opcional)" />
-        </div>
-
-        <h3 style="color:blue;text-align:center;">Reclamo</h3>
-        <div class="form-group">
-
-            <div ng-show="video" style="text-align:center;">
-                <video height="200" width="200" controls>
-                    <source src="mov_bbb.mp4" type="video/mp4">
-
-
-                </video>
-            </div>
-            <input ng-model="reclamo.comentario" class="form-control" type="text" value="{{reclamo.comentario}}" />
-
-
-        </div>
-
-        <h3 style="color:blue;text-align:center;">Lo que solicitas</h3>
-        <div class="form-group">
-
-            <p style="text-align:center">
-                <b>
-                    {{solicitud.seleccion}}
-                    <br />
-                    {{solicitud.otro}}
-                </b>
-            </p>
-
-
-        </div>
-
-        <div style="text-align:center;">
-            <button type="button" ng-click="showreclamohechos=true;showreclamorevisar=false;" class="btn btn-info">Regresar</button>
-            <button ng-disabled="envioReclamo.$invalid" type="submit" form="envio-reclamo" class="btn btn-info">Enviar</button>
-        </div>
-    </div>
-
-    <div ng-show="showterminos">
-        <h3 style="color:blue;text-align:center;">Reglamento Cicero</h3>
-        <div class="form-group">
-            <div style="height:100px;width:100%;border:1px solid #ccc;overflow:auto; text-align:center">
-                <b>REGLAMENTO</b><br>
-
-                <b>DE LA PLATAFORMA Y CLAUSULA ARBITRAL CICERO</b><br>
-
-                <b>1. De la plataforma</b><br>
-                Cicero es la plataforma responsable por la administración de las disputas que serán resueltas de acuerdo con el presente reglamento de arbitraje de conciencia.<br>
-
-                <b>2. Sometimiento de las partes</b><br>
-                Las partes se encontrarán sujetas al sistema digital de resolución de disputas de Cicero, al que hace referencia este Reglamento, solo si han aceptado las siguientes reglas y cambios subsecuentes dentro de la plataforma Cicero.<br>
-
-                <b>3. Comunicaciones</b><br>
-                Todas las comunicaciones entre las partes y Cicero o sus árbitros se harán      exclusivamente a través de Cicero, bien sea a través de su aplicación, su sitio web o correos electrónicos que se remitan a las partes. <br>
-
-                Cualquier comunicación realizada por otro medio, sin intermedio de Cicero, no podrá ser considerada. <br>
-
-                <b>4. Natividad digital</b><br>
-                El arbitraje de acuerdo con estas reglas se llevará a cabo exclusivamente de manera digital.<br>
-
-                <b>DEL PROCEDIMIENTO ARBITRAL MEDIANTE LA PLATAFORMA DIGITAL CICERO</b><br>
-
-                <b>5. Reclamo </b><br>
-                El reclamante registra un reclamo en la aplicación de Cicero, en donde manifestará su aceptación de la cláusula de resolución de controversias mediante arbitraje de conciencia a través de Cicero.<br>
-
-                <b>6. Validación y admisión del reclamo</b><br>
-                Todos los datos, vídeos, fotos y demás información digital enviada por el reclamante, serán revisados y validados por el personal de Cicero. En caso de no existir dudas, el reclamo será admitido. En caso de alguna duda, inexactitud o ampliación de información, Cicero se comunicará inmediatamente con el reclamante. <br>
-
-                <b>7. Respuesta del reclamo</b><br>
-                Admitido el reclamo, Cicero lo enviará junto a sus anexos al reclamado, quien tendrá diez días hábiles para aceptar resolver dicha disputa a través de Cicero, así como enviar su respuesta, mediante la cual absuelve todo aquello que considere necesario para su defensa.
-                A tales efectos, Cicero enviará un enlace al reclamado para que pueda aceptar la cláusula arbitral de Cicero así como subir todos los archivos que considere necesarios para su defensa. <br>
-
-                <b>8. Validación y admisión de la respuesta</b><br>
-                Todos los datos, vídeos, fotos y demás información digital enviada por el reclamado, serán revisados y validados por el personal de Cicero.
-                En caso de no existir dudas, la respuesta será admitida. En caso de alguna duda, inexactitud o ampliación de información, Cicero se comunicará inmediatamente con el reclamado.
-                Validada la información del reclamado, Cicero admitirá la respuesta y procederá a enviarla al reclamante junto a sus anexos.<br>
-
-                <b>9. Mediación</b><br>
-                A lo largo de todo el arbitraje de conciencia, Cicero intentará fungir como mediador entre las partes para que se alcance un común acuerdo entre ellas antes de la decisión por parte del árbitro.<br>
-
-                <b>10. Decisión</b><br>
-                Admitidos el reclamo y la respuesta, Cicero procederá a enviarlos conjuntamente a uno de sus árbitros, el cual será escogido aleatoriamente, para que, en el plazo de cinco días hábiles, resuelva dicha controversia en base a su leal saber y entender, la común intención de las partes y la buena fe.
-                De forma excepcional, el árbitro podrá solicitar más pruebas a las partes, una prórroga en el plazo para resolver o convocar una audiencia única entre él y las partes.<br>
-
-                <b>11. Principio de restitución</b><br>
-                Salvo en casos excepcionales, las partes y los árbitros, así como todos los miembros de la plataforma Cicero, se encuentran gobernados y limitados por el principio 2x1 o principio de restitución, el cual significa que la decisión del árbitro no podrá exceder, por concepto indemnizatorio, un nuevo producto o servicio más la cuantía del producto o servicio reclamado.<br>
-
-                <b>12. Rectificación, interpretación, integración o exclusión en la Decisión </b><br>
-                Enviada la Decisión por el árbitro a Cicero, Cicero validará el contenido de dicha Decisión y la enviará inmediatamente a las partes, quienes tendrán un plazo de tres días hábiles para solicitar cualquier rectificación, interpretación, integración o exclusión que consideren necesario en el mismo.<br>
-
-                <b>DE LOS ARBITROS</b><br>
-
-                <b>13. Lista de Árbitros</b><br>
-                Todas las controversias de Cicero serán resueltas por los árbitros que formen parte de la “lista de árbitros” de la plataforma Cicero.<br>
-
-                <b>14. Ingreso a la Lista de Árbitros</b><br>
-                Cualquier abogado mayor de 30 años podrá solicitar ser árbitro en la plataforma digital Cicero. Para solicitarlo, deberá completar la solicitud dentro de su página web.
-                Enviada la solicitud, Cicero se pondrá en contacto inmediatamente con el solicitante, a quien se le realizará el “examen de ingreso arbitral”.
-                En caso de aprobar el examen de ingreso, el solicitante será admitido como árbitro. En caso de no aprobar, el solicitante podrá volver a intentarlo transcurridos tres meses desde su último rechazo.<br>
-
-                <b>15. Imparcialidad e independencia</b><br>
-                Al aceptar el cargo, el árbitro declara ser totalmente imparcial e independiente respecto del reclamo y de las partes.
-                Las partes o el propio árbitro pueden informar que no se cumple con este último requisito. Cicero decidirá su remoción como árbitro.
-                En caso de remoción del árbitro, o su imposibilidad de continuar con el arbitraje, Cicero elegirá un nuevo árbitro aleatoriamente.<br>
-
-                <b>16. Costas y costos</b><br>
-
-                Las costas y costos serán pagadas por el reclamado, en caso se trate de una empresa. En caso se trate de dos personas particulares, las costas y costos del reclamo deberán ser pagadas a mitades por ambas partes, pudiéndose cualquiera de ellas subrogar en el pago de la otra. <br>
-
-                <b>17. Normas aplicables e idioma</b><br>
-                Los árbitros resolverán la disputa aplicando su leal saber entender, la común intención de las partes y la buena fe.
-                El lenguaje utilizado será el español, salvo pacto en contrario.<br>
-
-                <b>18. Provisiones Finales</b><br>
-                Las partes acuerdan expresamente que no se aplicará supletoriamente el Decreto Legislativo Nº 1071, Decreto Legislativo que norma el arbitraje.
-                Solo se aplicará las normas que no sean indisponibles por las partes.
-                En caso de falta de regla, Cicero decidirá de la manera más favorable y razonable para el desarrollo del arbitraje.
-
-
-            </div>
-            <div class="radio">
-                <label><input ng-click="aceptarterminos=true" required form="envio-reclamo" type="radio" name="condiciones" value="acepto">Acepto Normas Cicero</label>
-            </div>
-            <h3 style="color:blue;text-align:center;">Cláusula Cicero</h3>
-            <div style="height:80px;width:100%;border:1px solid #ccc;overflow:auto; text-align:center">
-                <b>CLAUSULA MODELO</b><br>
-
-                Acepto que todas las controversias, derivadas o relacionadas con el producto/servicio del presente reclamo, sean resueltas mediante arbitraje de conciencia a través de la plataforma digital "Cicero", cuyo reglamento, procedimiento y decisión declaro aceptar en su totalidad.
-
-
-
-            </div>
-            <div class="radio">
-                <label><input ng-click="aceptarclausula=true" required form="envio-reclamo" type="radio" name="clausula" value="acepto">Acepto Cláusula Cicero</label>
-            </div>
-
-        </div>
-
-
-
-        <div style="text-align:center;">
-            <button type="button" ng-click="showreclamosolicitud=true;showterminos=false;" class="btn btn-info">Regresar</button>
-            <button type="button" ng-disabled="!aceptarclausula || !aceptarterminos" ng-click="showterminos=false;showreclamohechos=true;" class="btn btn-info">Siguiente</button>
-        </div>
-
-
-    </div>
 
 
 }
@@ -460,7 +503,7 @@
         $(document).ready(function () {
             $("#showfoto2").show();
         });
-        
+
 
     }
 </script>

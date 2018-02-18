@@ -7,7 +7,19 @@ app.controller('mainCtrl', function ($scope) {
     var reclamo = { video: "", comentario: "Sin comentario" };
     var solicitud = { seleccion: "", otro: "" };
 
+    $scope.resultado_expediente;
+    
 
+   
+    function getExpediente() {
+
+        var url = "/Main/getExpediente";
+        var exp = $('#numExpediente').val();
+        $.get(url, { expediente: exp }, function (data) {
+            $("#resultado").val(data);
+        });
+
+    }
  
 
     $scope.demandante = demandante;
@@ -51,5 +63,23 @@ function previewImage(input_id, display_id) {
     } else {
         preview.src = "";
     }
+}
+
+function getExpediente() {
+
+    var url = "/Main/getExpediente";
+    var exp = $('#numExpediente').val();
+    $.get(url, { expediente: exp }, function (data) {
+        
+        $("#resultado").html(data);
+        $("#resultado").show();
+    });
+
+}
+
+function borrarReclamo() {
+
+    $("#resultado").hide();
+
 }
 
