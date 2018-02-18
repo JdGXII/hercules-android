@@ -14,7 +14,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="wwwroot\images\dnis\" />
     <Folder Include="wwwroot\videos\" />
   </ItemGroup>
 
