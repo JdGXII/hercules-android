@@ -32,10 +32,10 @@ app.controller('mainCtrl', function ($scope) {
 });
 
 
-function previewVideo() {
+function previewVideo(input_id, element_id) {
 
-    var preview = document.querySelector('video');
-    var file = document.querySelector('#video').files[0];
+    var preview = document.querySelector(element_id);
+    var file = document.querySelector(input_id).files[0];
     var reader = new FileReader();
 
     reader.onloadend = function () {

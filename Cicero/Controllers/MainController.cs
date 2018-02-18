@@ -27,7 +27,7 @@ namespace Cicero.Controllers
         }
 
         [HttpPost]
-        public IActionResult PresentarReclamo(Demandante demandante, Demandado demandado,  string solicitud, IFormFile video_demandante, IFormFile documentos_demandante)
+        public IActionResult PresentarReclamo(IFormFile demandante_dni, string demandante_email , string demandante_nombre_demandado, string demandante_direccion_demandado, string demandante_comentario,  string solicitud, IFormFile demandante_video, IFormFile demandante_documentos)
         {
 
             //Task<bool> video = Savefile(video_demandante, "videos", video_demandante.FileName);
@@ -35,17 +35,26 @@ namespace Cicero.Controllers
             
             Expediente expediente = new Expediente();
             DBConnection testconn = new DBConnection();
-
-            SqlDataReader dataReader = testconn.ReadFromTest("SELECT * FROM Expedientes");
+            
 
             StringBuilder nombre_foto = new StringBuilder(expediente.codigo_expediente.ToString());
             nombre_foto.Append("_foto_dni_demandante.jpg");
             StringBuilder foto_dni_url = new StringBuilder("~/images/dnis/");
             foto_dni_url.Append(nombre_foto);
-            Task<bool> imagen = Savefile(documentos_demandante, "images/dnis", nombre_foto.ToString());
+            Task<bool> imagen = Savefile(demandante_dni, "images/dnis", nombre_foto.ToString());
+            StringBuilder video_url = new StringBuilder("~/videos/");
+            video_url.Append(expediente.codigo_expediente);
+            video_url.Append(demandante_video.FileName);
+            StringBuilder foto_extra_url = new StringBuilder("~/images/");
+            foto_extra_url.Append(expediente.codigo_expediente);
+            foto_extra_url.Append(demandante_documentos.FileName);
 
-       
+            var query = $"INSERT INTO Expedientes(codigo, email_demandante, nombre_demandado, direccion_demandado, comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url, foto_reclamo_url, video_reclamo_url, demandante_acepta_terminos) " +
+                $"VALUES ('{expediente.codigo_expediente}', '{demandante_email}', '{demandante_nombre_demandado}', '{demandante_direccion_demandado}', '{demandante_comentario}', '{solicitud}', '{foto_dni_url}', '{foto_extra_url}', '{video_url}', 1)";
 
+
+            bool v = testconn.WriteToTest(query);
+            testconn.CloseConnection();
 
 
             return RedirectToAction("Lala");
