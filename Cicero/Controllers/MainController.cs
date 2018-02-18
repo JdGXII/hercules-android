@@ -56,8 +56,9 @@ namespace Cicero.Controllers
             bool v = testconn.WriteToTest(query);
             testconn.CloseConnection();
 
-
-            return RedirectToAction("Lala");
+            TempData["codigo_expediente"] = expediente.codigo_expediente;
+            TempData["email"] = demandante_email;
+            return RedirectToAction("NumeroExpediente", "Home");
         }
 
         private async Task<bool> Savefile(IFormFile file, string path, string file_name)
@@ -86,8 +87,9 @@ namespace Cicero.Controllers
 
         }
 
-        public IActionResult Lala()
+        public IActionResult NumeroExpediente()
         {
+
             return RedirectToAction("Index", "Home");
         }
 

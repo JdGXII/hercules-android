@@ -16,9 +16,19 @@ namespace Cicero.Controllers
             return View();
         }
 
-        public IActionResult About()
+        public IActionResult NumeroExpediente()
         {
-            ViewData["Message"] = "Your application description page.";
+            if(TempData["codigo_expediente"] != null)
+            {
+                ViewBag.Mensaje = $"El número de expediente para tu reclamo es <b>{TempData["codigo_expediente"]}</b>." +
+                    $"<br />Esta información ha sido enviada a tu dirección de correo electrónico {TempData["email"]}." +
+                    $"<br />No pierdas tu número de expediente pues lo necesitaras para hacerle seguimiento a tu reclamo." +
+                    $"<br /><b>Gracias por usar Cicero</b>";
+            }
+            else
+            {
+                ViewBag.Mensaje = "Hubo un error y tu expediente no pudo ser generado. Por favor inténtalo de nuevo.";
+            }
 
             return View();
         }

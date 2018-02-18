@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Numero Expediente";
+}
+
+<div class="row">
+<div class="top-div">
+
+    <a asp-controller="Home" asp-action="Index"><span style="float:left;"><i class="glyphicon glyphicon-arrow-left white"></i></span></a>
+
+    
+    <b>
+        Número de expediente generado
+    </b>
+</div>
+
+<div style="border:1px solid; border-radius:25px;text-align:center;">@Html.Raw(ViewBag.Mensaje)</div><br />
+<div class="row" style="margin-left:50px; margin-right:50px;"><a asp-controller="Home" asp-action="Index" class="btn btn-block btn-cicero"><b>Regresar a Inicio</b></a></div>
+</div>
