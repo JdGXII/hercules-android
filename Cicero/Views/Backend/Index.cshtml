@@ -1,0 +1,28 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+
+    <h2>Login</h2>
+    <br />
+
+    <div class="row">
+        @using (Html.BeginForm("Login", "Backend", new { id = "login", name = "hacerLogin" }))
+        {
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Usuario" name="usuario"/>
+                <input class="form-control" type="password" placeholder="Contraseña" name="password" />
+                <button class="btn btn-cicero">Entrar</button>
+
+            </div>
+        }
+
+    </div>
+
+
+</div>
+
+

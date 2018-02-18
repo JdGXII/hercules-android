@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Cicero.Models.ModeloExpediente>
+
+@{
+    ViewData["Title"] = "Lista de Expedientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Lista de Expedientes</h2>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Codigo Expediente</th>
+            <th>Estatus</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@item.codigo_expediente</td>
+            <td>En verificación</td>
+            <td>
+                @Html.ActionLink("Ver detalles", "VerExpediente", new {  id=item.codigo_expediente }) 
+              
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
