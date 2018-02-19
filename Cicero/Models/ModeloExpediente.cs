@@ -17,7 +17,9 @@ namespace Cicero.Models
         public string demandante_video;
         public string demandante_documentos;
 
-        public ModeloExpediente() { }
+        public ModeloExpediente() {
+            this.codigo_expediente = "vacio";
+        }
 
         public ModeloExpediente(string codigo_expediente, string demandante_dni, string demandante_email, string demandante_nombre,
             string demandante_direccion, string solicitud, string demandante_comentario, string demandante_video, string demandante_documentos)

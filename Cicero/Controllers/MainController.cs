@@ -95,14 +95,45 @@ namespace Cicero.Controllers
 
         public string getExpediente(string expediente)
         {
-            if(expediente != "1234")
+            ModeloExpediente exp = buscarExpediente(expediente);
+            if(exp.codigo_expediente != "vacio")
             {
-                return "<p style='text-align:center'>Reclamo no encontrado. Porfavor revise el numero expediente e intente de nuevo</p>";
+                return "<p style='text-align:center'>El status de tu reclamo es: en verificacion</p>";
             }
             else
             {
-                return "<p style='text-align:center'>El status de tu reclamo es: en verificacion</p>"; 
+                return "<p style='text-align:center'>Reclamo no encontrado. Porfavor revise el numero expediente e intente de nuevo</p>";
+                
             }
+        }
+
+        private ModeloExpediente buscarExpediente(string codigo_expediente)
+        {
+            ModeloExpediente expediente = new ModeloExpediente();
+            DBConnection testconn = new DBConnection();
+            SqlDataReader dataReader = testconn.ReadFromTest($"SELECT codigo, email_demandante, nombre_demandado, direccion_demandado, comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url, foto_reclamo_url, video_reclamo_url FROM Expedientes WHERE codigo = '{codigo_expediente}'");
+            while (dataReader.Read())
+            {
+
+
+                string codigo = dataReader.GetString(0);
+                string email = dataReader.GetString(1);
+                string nombre = dataReader.GetString(2);
+                string direccion = dataReader.GetString(3);
+                string comentario = dataReader.GetString(4);
+                string solicitud = dataReader.GetString(5);
+                string foto_dni = dataReader.GetString(6);
+                string foto_reclamo = dataReader.GetString(7);
+                string video = dataReader.GetString(8);
+
+                expediente = new ModeloExpediente(codigo, foto_dni, email, nombre, direccion, solicitud, comentario, video, foto_reclamo);
+
+            }
+            testconn.CloseDataReader();
+            testconn.CloseConnection();
+            return expediente;
+
+
         }
     }
 }
