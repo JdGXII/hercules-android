@@ -1,80 +1,50 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-
+﻿
+@{
+    ViewData["Title"] = "LlenarRespuesta";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+hola
 
-
-<div ng-hide="hidemain" class="row">
-    <div style="text-align:center; color:#680000;"><h1><b>C I C E R O</b></h1></div>
-    <br />
-    <img class="center-block logo" src="~/images/Logo Cicero.png" />
-    <div style="margin-left:50px;margin-right:50px;">
-        <button type="button" ng-click="hidemain=true;showreclamodemandante=true;" class="btn btn-block btn-cicero"><b>Presenta tu reclamo</b></button>
-        <button type="button" ng-click="hidemain=true;showreconsultarreclamo=true;" class="btn btn-block btn-cicero"><b>Consulta tu reclamo</b></button>
-        <a asp-action="RevisarExpediente" asp-controller="Home" class="btn btn-block btn-cicero"><b>Responde un reclamo</b></a>
-        
-    </div>
-
-</div>
-
-<div ng-show="showreconsultarreclamo" class="row">
-
-    <div class="top-div">
-
-        <a href="" onclick="borrarReclamo()" ng-click="hidemain=false;showreconsultarreclamo=false;"><span style="float:left;"><i class="glyphicon glyphicon-arrow-left white"></i></span></a>
-
-
-        <b>Revisar reclamo</b>
-
-
-    </div>
-    <div class="form-group">
-        <form name="consultar-reclamo">
-            <input  class="form-control" type="text" id="numExpediente" name="numero_expediente" placeholder="Ingresa número de expediente" />
-
-            <br />
-            <div style="margin-left:50px; margin-right:50px;">
-                <button ng-disabled="consultar-reclamo.$invalid" onclick="getExpediente()" type="button" class="btn btn-block btn-cicero"><b>Revisar</b></button>
-            </div>
-        </form>
-    </div>
-    <div id="resultado" style="display:none;"></div>
-
-
-</div>
-
-
-
-
-
-
-@using (Html.BeginForm("PresentarReclamo", "Main", FormMethod.Post, new { id = "envio-reclamo", enctype = "multipart/form-data", name = "envioReclamo" }))
-{
-    <div ng-show="showreclamodemandante" class="row">
+@using (Html.BeginForm("SubirRespuestaReclamo", "Home", FormMethod.Post, new { id = "envio-respuesta", enctype = "multipart/form-data", name = "envioRepuesta" }))
+{ 
+    <input type="hidden" value="@ViewBag.codigo" name="expediente" />
+    <div ng-hide="hidepoderlegal" class="row">
 
         <div class="top-div">
 
-            <a href="" ng-click="hidemain=false;showreclamodemandante=false;"><span style="float:left;"><i class="glyphicon glyphicon-arrow-left white"></i></span></a>
+            <a asp-action="Index" asp-controller="Home"><span style="float:left;"><i class="glyphicon glyphicon-arrow-left white"></i></span></a>
 
 
-            <b>Sube tu DNI</b>
-
-
+            <b>
+                Verificación para reclamo @ViewBag.codigo
+            </b>
         </div>
-        <p style="text-align:center">
-            Agrega una foto de tu DNI<br />
+
+
+        <p style="text-align:center;">
+            Agrega tu
+            poder de representación
+            <br />
+            <br />
+
+
             <label>
-                <img class="input_vector" src="~/images/añadirDNI.png" /><input  ng-click="foto=true;" onchange="previewImage('#input-dni','#foto-dni')" id="input-dni" style="display: none;" form="envio-reclamo" type="file" name="demandante_dni" />
-            </label><br />
-            <div ng-show="foto" id="showFoto2" style="text-align:center;"><img style="width:90%;" id="foto-dni" src="" height="200" /></div>
+                <img class="input_vector" src="~/images/anadirArchivo.png" />
+                <input style="display: none;" form="envio-respuesta" type="file" name="poder_legal" />
+            </label>
+
+
         </p>
 
-        <div class="form-group">
+        <p style="text-align:center;">
+            Agrega una foto de tu DNI<br />
+            <label>
+                <img class="input_vector" src="~/images/añadirDNI.png" />
+                <input ng-click="foto3=true;" onchange="previewImage('#input-dni-representante','#foto-dni-representante')" id="input-dni-representante" style="display: none;" form="envio-respuesta" type="file" name="dni_poder_legal" />
 
-            <input  class="form-control" type="email" placeholder="Tu correo electrónico" name="demandante_email" ng-model="demandante.email" value="{{demandante.email}}" />
-
-
-        </div>
+            </label>
+            <div ng-show="foto3" style="text-align:center;"><img style="width:90%;" id="foto-dni-representante" src="" height="200" /></div>
+        </p>
 
         <div style="width:100%;text-align:center;padding:10px;">
             <h4 style="text-align:center;">Reglamento Cicero</h4>
@@ -168,48 +138,44 @@
 
             </div>
             <div class="radio">
-                <label><input ng-click="aceptarclausula=true"  form="envio-reclamo" type="radio" name="clausula" value="acepto">Acepto Cláusula Cicero</label>
+                <label><input ng-click="aceptarclausula2=true" form="envio-respuesta" type="radio" name="clausula" value="acepto">Acepto Cláusula Cicero</label>
             </div>
         </div>
 
 
-        <div style="text-align:center;">
-            <button ng-disabled="!aceptarclausula" type="button" ng-click="showreclamodemandante=false;showreclamodemandado=true;" class="btn btn-cicero"><b>Siguiente</b></button>
-        </div>
 
+        <div style="text-align:center;">
+            <button ng-disabled="!aceptarclausula2" type="button" ng-click="hidepoderlegal=true;showresponderreclamo=true;" class="btn btn-cicero"><b>Siguiente</b></button>
+        </div>
 
     </div>
 
-    <div ng-show="showreclamodemandado" class="row">
+    <div ng-show="showresponderreclamo" class="row">
+
+
 
         <div class="top-div">
 
-            <a href="" ng-click="showreclamodemandante=true;showreclamodemandado=false;"><span style="float:left;"><i class="glyphicon glyphicon-arrow-left white"></i></span></a>
+            <a href="" ng-click="hidepoderlegal=false;showresponderreclamo=false;"><span style="float:left;"><i class="glyphicon glyphicon-arrow-left white"></i></span></a>
 
 
             <b>
-                Crea tu reclamo
+                Responde al reclamo @ViewBag.codigo
             </b>
 
 
         </div>
-        <div class="form-group">
 
-
-            <input required  value="{{demandado.nombre}}" ng-model="demandado.nombre" form="envio-reclamo" class="form-control" type="text" placeholder="Nombre de la empresa reclamada" name="demandante_nombre_demandado" />
-            <input required  value="{{demandado.ruc}}" ng-model="demandado.ruc" form="envio-reclamo" class="form-control" type="text" placeholder="Dirección de la empresa reclamada" name="demandante_direccion_demandado" />
-
-        </div>
         <div class="row">
             <p style="text-align:center">
                 Cuenta los hechos o adjunta pruebas
                 <br />
                 <div class="col-xs-6" style="text-align:center;">
                     <label>
-                        <img class="input_vector" src="~/images/anadirVideo.png" /><input  ng-click="video=true;" id="video" onchange="previewVideo('#video', '#video_reclamo')" style="display: none;" form="envio-reclamo" type="file" name="demandante_video" ng-model="reclamo.video" />
+                        <img class="input_vector" src="~/images/anadirVideo.png" /><input ng-click="video=true;" id="video2" onchange="previewVideo('#video2', '#video_respuesta')" style="display: none;" form="envio-respuesta" type="file" name="video_demandado" ng-model="reclamo.video" />
                     </label><br />
-                    <div ng-show="video"  style="text-align:center;">
-                        <video id="video_reclamo" style="height:200px; width:90%;" controls>
+                    <div ng-show="video" style="text-align:center;">
+                        <video id="video_respuesta" style="height:200px; width:90%;" controls>
                             <source src="mov_bbb.mp4" type="video/mp4">
 
 
@@ -218,62 +184,35 @@
                 </div>
                 <div class="col-xs-6" style="text-align:center;">
                     <label>
-                        <img class="input_vector" src="~/images/anadirFoto.png" /><input ng-click="foto2=true;" onchange="previewImage('#input-pruebas','#foto-pruebas')" id="input-pruebas" style="display: none;" form="envio-reclamo" type="file" name="demandante_documentos" />
+                        <img class="input_vector" src="~/images/anadirFoto.png" /><input ng-click="foto-demandado=true" onchange="previewImage('#input-pruebas-demandado','#foto-pruebas-demandado')" id="input-pruebas-demandado" style="display: none;" form="envio-respuesta" type="file" name="documentos_demandado" />
                     </label><br />
-                    <div ng-show="foto2" style="text-align:center;"><img style="width:90%;" id="foto-pruebas" src="" height="200" /></div>
+                    <div ng-show="video" style="text-align:center;"><img style="width:90%;" id="foto-pruebas-demandado" src="" height="200" /></div>
                 </div>
             </p>
         </div>
 
 
-        <div class="row" style="margin-top:5px;">
 
-            <p style="text-align:center;">¿Qué solicitas?</p>
-            <div class="btn-group" data-toggle="buttons">
-
-
-
-                <label class="btn btn-block btn-success " ng-click="textfield=false; solicitud.otro = ''"><input rform="envio-reclamo" type="radio" name="solicitud" ng-model="solicitud.seleccion" value="Cambio de producto o servicio">Cambio de producto o servicio</label>
-
-
-                <label class="btn btn-block btn-success " ng-click="textfield=false; solicitud.otro = ''"><input form="envio-reclamo" type="radio" name="solicitud" ng-model="solicitud.seleccion" value="Indemnización 2X1">Indemnización 2X1</label>
-
-
-                <label class="btn btn-block btn-success " ng-click="textfield=true;"><input ng-model="solicitud.seleccion" form="envio-reclamo" type="radio" name="solicitud" value="Otro">Otro (específica) </label>
-                <input ng-show="textfield" ng-model="solicitud.otro" id="texto-solicitud" type="text" form="envio-reclamo" class="form-control" name="solicitud" />
-            </div>
-
-
-        </div>
 
         <div class="row" style="margin-top:5px;">
             <p style="text-align:center;">¿Deseas añadir algo? (Opcional)</p>
             <div style="text-align:center">
-                <textarea form="envio-reclamo" class="form-control" name="demandante_comentario"></textarea>
+                <textarea form="envio-respuesta" class="form-control" name="comentario_demandado"></textarea>
             </div>
 
         </div>
 
         <div style="text-align:center; margin-top:7px;" class="row;">
 
-            <button ng-disabled="envioReclamo.$invalid" type="submit" form="envio-reclamo" class="btn btn-cicero"><span class="glyphicon glyphicon-send white"></span><b> Enviar</b></button>
+            <button  type="submit" form="envio-respuesta" class="btn btn-cicero"><span class="glyphicon glyphicon-send white"></span><b> Enviar</b></button>
         </div>
 
 
+
+
+
+
     </div>
-
-
-
-
+    <button type="submit" class="btn btn-cicero" >Submit</button>
 }
 
-<script>
-    function showFoto() {
-
-        $(document).ready(function () {
-            $("#showfoto2").show();
-        });
-
-
-    }
-</script>
