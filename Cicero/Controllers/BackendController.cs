@@ -67,7 +67,7 @@ namespace Cicero.Controllers
         {
             ModeloExpediente expediente = new ModeloExpediente();
             DBConnection testconn = new DBConnection();
-            SqlDataReader dataReader = testconn.ReadFromTest($"SELECT codigo, email_demandante, nombre_demandado, direccion_demandado, comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url, foto_reclamo_url, video_reclamo_url FROM Expedientes WHERE codigo = '{codigo_expediente}'");
+            SqlDataReader dataReader = testconn.ReadFromTest($"SELECT codigo, email_demandante, nombre_demandado, direccion_demandado, comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url, foto_reclamo_url, video_reclamo_url, apoderado_dni_url, respuesta FROM Expedientes WHERE codigo = '{codigo_expediente}'");
             while (dataReader.Read())
             {
                 
@@ -81,8 +81,18 @@ namespace Cicero.Controllers
                 string foto_dni = dataReader.GetString(6);
                 string foto_reclamo = dataReader.GetString(7);
                 string video = dataReader.GetString(8);
+                string dni_respuesta = "No hay respuesta aun";
+                string respuesta = "No hay respuesta aun";
+                if (!dataReader.IsDBNull(9))
+                {
+                    dni_respuesta = dataReader.GetString(9);
+                }
+                if (!dataReader.IsDBNull(10))
+                {
+                    respuesta = dataReader.GetString(10);
+                }
 
-                expediente = new ModeloExpediente(codigo, foto_dni, email, nombre, direccion, solicitud, comentario, video, foto_reclamo);
+                expediente = new ModeloExpediente(codigo, foto_dni, email, nombre, direccion, solicitud, comentario, video, foto_reclamo, dni_respuesta, respuesta);
                 
             }
             testconn.CloseDataReader();

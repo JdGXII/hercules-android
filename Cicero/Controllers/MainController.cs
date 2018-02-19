@@ -126,6 +126,7 @@ namespace Cicero.Controllers
                 string foto_reclamo = dataReader.GetString(7);
                 string video = dataReader.GetString(8);
 
+
                 expediente = new ModeloExpediente(codigo, foto_dni, email, nombre, direccion, solicitud, comentario, video, foto_reclamo);
 
             }
