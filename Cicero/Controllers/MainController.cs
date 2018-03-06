@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.WindowsAzure; // Namespace for CloudConfigurationManager
+using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
+using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types
+using Microsoft.Azure; //Namespace for CloudConfigurationManager
 
 namespace Cicero.Controllers
 {
@@ -18,6 +22,7 @@ namespace Cicero.Controllers
     {
         private IHostingEnvironment _environment;
         private readonly ILogger _logger;
+        private string blob_string = "DefaultEndpointsProtocol=https;AccountName=ciceron;AccountKey=oW6wCmyY6AG/Fq26s4nl6m0Hsnj8tUcG6wVTdm7K4BAbPevcVzkVpACalgN7xRNKTXzVynKGRkzD4QFk4SO77g==;EndpointSuffix=core.windows.net";
 
 
         public MainController(IHostingEnvironment environment, ILogger<MainController> logger)
@@ -27,7 +32,7 @@ namespace Cicero.Controllers
         }
 
         [HttpPost]
-        public IActionResult PresentarReclamo(IFormFile demandante_dni, string demandante_email , string demandante_nombre_demandado, string demandante_direccion_demandado, string demandante_comentario,  string solicitud)
+        public IActionResult PresentarReclamo(IFormFile demandante_dni, IFormFile demandante_video, string demandante_email , string demandante_nombre_demandado, string demandante_direccion_demandado, string demandante_comentario,  string solicitud)
         {
 
             //Task<bool> video = Savefile(video_demandante, "videos", video_demandante.FileName);
@@ -39,11 +44,12 @@ namespace Cicero.Controllers
 
             StringBuilder nombre_foto = new StringBuilder(expediente.codigo_expediente.ToString());
             nombre_foto.Append("_foto_dni_demandante.jpg");
-            StringBuilder foto_dni_url = new StringBuilder("~/images/dnis/");
+            StringBuilder foto_dni_url = new StringBuilder("https://ciceron.blob.core.windows.net/dnis/");
             foto_dni_url.Append(nombre_foto);
-            Task<bool> imagen = Savefile(demandante_dni, "images/dnis", nombre_foto.ToString());
-            StringBuilder video_url = new StringBuilder("~/videos/");
+            Task<bool> imagen = Savefile(demandante_dni, "dnis", nombre_foto.ToString());
+            StringBuilder video_url = new StringBuilder("https://ciceron.blob.core.windows.net/videos-demandante/");
             video_url.Append(expediente.codigo_expediente);
+            Task<bool> video = Savefile(demandante_video, "videos-demandante", video_url.ToString());
             //video_url.Append(demandante_video.FileName);
             StringBuilder foto_extra_url = new StringBuilder("~/images/");
             foto_extra_url.Append(expediente.codigo_expediente);
@@ -63,7 +69,31 @@ namespace Cicero.Controllers
 
         private async Task<bool> Savefile(IFormFile file, string path, string file_name)
         {
+            //Stream stream
+            //await file.CopyToAsync(stream);
+            // Retrieve storage account from connection string.
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(blob_string);
+
+            // Create the blob client.
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve a reference to a container.
+            CloudBlobContainer container = blobClient.GetContainerReference(path);
+
+            // Retrieve reference to a blob named "myblob".
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(file_name);
+
+            
+
+            await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
+
             bool success = true;
+
+            return success;
+
+
+
+            /*bool success = true;
             var uploads = Path.Combine(_environment.WebRootPath, path);
             if (file.Length > 0)
             {
@@ -83,7 +113,7 @@ namespace Cicero.Controllers
                 }
             }
 
-            return success;
+            return success;*/
 
         }
 
