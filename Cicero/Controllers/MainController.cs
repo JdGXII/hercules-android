@@ -22,7 +22,7 @@ namespace Cicero.Controllers
     {
         private IHostingEnvironment _environment;
         private readonly ILogger _logger;
-        private string blob_string = "DefaultEndpointsProtocol=https;AccountName=ciceron;AccountKey=oW6wCmyY6AG/Fq26s4nl6m0Hsnj8tUcG6wVTdm7K4BAbPevcVzkVpACalgN7xRNKTXzVynKGRkzD4QFk4SO77g==;EndpointSuffix=core.windows.net";
+        private string blob_string = "DefaultEndpointsProtocol=http;AccountName=ciceron;AccountKey=oW6wCmyY6AG/Fq26s4nl6m0Hsnj8tUcG6wVTdm7K4BAbPevcVzkVpACalgN7xRNKTXzVynKGRkzD4QFk4SO77g==;EndpointSuffix=core.windows.net";
 
 
         public MainController(IHostingEnvironment environment, ILogger<MainController> logger)
@@ -32,14 +32,19 @@ namespace Cicero.Controllers
         }
 
         [HttpPost]
-        public IActionResult PresentarReclamo(IFormFile demandante_dni, IFormFile demandante_video, string demandante_email , string demandante_nombre_demandado, string demandante_direccion_demandado, string demandante_comentario,  string solicitud)
+        public IActionResult PresentarReclamo(IFormFile demandante_dni, IFormFile demandante_video, IFormFile demandante_documentos, string demandante_email , string demandante_nombre_demandado, string demandante_direccion_demandado, string demandante_comentario,  string solicitud)
         {
 
             //Task<bool> video = Savefile(video_demandante, "videos", video_demandante.FileName);
             
             
             Expediente expediente = new Expediente();
-            DBConnection testconn = new DBConnection();
+
+            StringBuilder nombre_video = new StringBuilder(expediente.codigo_expediente.ToString());
+            nombre_video.Append("_video_demandante.mp4");
+            StringBuilder video_url = new StringBuilder("https://ciceron.blob.core.windows.net/videosdemandante/");
+            video_url.Append(nombre_video);
+            Task<bool> video = Savefile(demandante_video, "videosdemandante", nombre_video.ToString());
             
 
             StringBuilder nombre_foto = new StringBuilder(expediente.codigo_expediente.ToString());
@@ -47,14 +52,18 @@ namespace Cicero.Controllers
             StringBuilder foto_dni_url = new StringBuilder("https://ciceron.blob.core.windows.net/dnis/");
             foto_dni_url.Append(nombre_foto);
             Task<bool> imagen = Savefile(demandante_dni, "dnis", nombre_foto.ToString());
-            StringBuilder video_url = new StringBuilder("https://ciceron.blob.core.windows.net/videos-demandante/");
-            video_url.Append(expediente.codigo_expediente);
-            Task<bool> video = Savefile(demandante_video, "videos-demandante", video_url.ToString());
-            //video_url.Append(demandante_video.FileName);
-            StringBuilder foto_extra_url = new StringBuilder("~/images/");
-            foto_extra_url.Append(expediente.codigo_expediente);
-            //foto_extra_url.Append(demandante_documentos.FileName);
 
+
+            StringBuilder nombre_doc = new StringBuilder(expediente.codigo_expediente.ToString());
+            nombre_doc.Append("_foto_extra_demandante.jpg");
+            StringBuilder foto_extra_url = new StringBuilder("https://ciceron.blob.core.windows.net/fotosextrademandante/");
+            foto_extra_url.Append(nombre_doc);
+            Task<bool> doc = Savefile(demandante_documentos, "fotosextrademandante", nombre_doc.ToString());
+
+
+            
+
+            DBConnection testconn = new DBConnection();
             var query = $"INSERT INTO Expedientes(codigo, email_demandante, nombre_demandado, direccion_demandado, comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url, foto_reclamo_url, video_reclamo_url, demandante_acepta_terminos) " +
                 $"VALUES ('{expediente.codigo_expediente}', '{demandante_email}', '{demandante_nombre_demandado}', '{demandante_direccion_demandado}', '{demandante_comentario}', '{solicitud}', '{foto_dni_url}', '{foto_extra_url}', '{video_url}', 1)";
 
@@ -91,29 +100,6 @@ namespace Cicero.Controllers
 
             return success;
 
-
-
-            /*bool success = true;
-            var uploads = Path.Combine(_environment.WebRootPath, path);
-            if (file.Length > 0)
-            {
-
-                using (var fileStream = new FileStream(Path.Combine(uploads, file_name), FileMode.Create))
-                {
-                    try
-                    {
-                        await file.CopyToAsync(fileStream);
-                    }
-                    catch(Exception ex)
-                    {
-                        success = false;
-                        _logger.LogWarning(ex.ToString());
-                    }
-                    
-                }
-            }
-
-            return success;*/
 
         }
 

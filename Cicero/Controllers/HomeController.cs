@@ -8,11 +8,17 @@ using Cicero.Models;
 using Cicero.DataAccess;
 using System.Data.SqlClient;
 using Microsoft.AspNetCore.Http;
+using System.Text;
+using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 
 namespace Cicero.Controllers
 {
     public class HomeController : Controller
     {
+        private string blob_string = "DefaultEndpointsProtocol=http;AccountName=ciceron;AccountKey=oW6wCmyY6AG/Fq26s4nl6m0Hsnj8tUcG6wVTdm7K4BAbPevcVzkVpACalgN7xRNKTXzVynKGRkzD4QFk4SO77g==;EndpointSuffix=core.windows.net";
+
+
         public IActionResult Index()
         {
            
@@ -103,6 +109,13 @@ namespace Cicero.Controllers
         [HttpPost]
         public IActionResult SubirRespuestaReclamo(string expediente, IFormFile dni_poder_legal, IFormFile poder_legal, string comentario_demandado)
         {
+
+            StringBuilder nombre_foto = new StringBuilder(expediente);
+            nombre_foto.Append("_foto_dni_representante.jpg");
+            StringBuilder foto_dni_url = new StringBuilder("https://ciceron.blob.core.windows.net/respuestademandado/");
+            foto_dni_url.Append(nombre_foto);
+            Task<bool> imagen = Savefile(dni_poder_legal, "respuestademandado", nombre_foto.ToString());
+
             DBConnection testconn = new DBConnection();
  
             string query = $"UPDATE Expedientes SET respuesta= '{comentario_demandado}', apoderado_dni_url= 'verificando' WHERE codigo = '{expediente}'";
@@ -130,6 +143,33 @@ namespace Cicero.Controllers
         {
             ViewBag.codigo = TempData["codigo_expediente"].ToString();
             return View();
+
+        }
+
+        private async Task<bool> Savefile(IFormFile file, string path, string file_name)
+        {
+            //Stream stream
+            //await file.CopyToAsync(stream);
+            // Retrieve storage account from connection string.
+            CloudStorageAccount storageAccount = CloudStorageAccount.Parse(blob_string);
+
+            // Create the blob client.
+            CloudBlobClient blobClient = storageAccount.CreateCloudBlobClient();
+
+            // Retrieve a reference to a container.
+            CloudBlobContainer container = blobClient.GetContainerReference(path);
+
+            // Retrieve reference to a blob named "myblob".
+            CloudBlockBlob blockBlob = container.GetBlockBlobReference(file_name);
+
+
+
+            await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
+
+            bool success = true;
+
+            return success;
+
 
         }
 

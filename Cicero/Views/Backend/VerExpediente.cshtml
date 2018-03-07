@@ -13,13 +13,24 @@
     <h2>Email reclamante: @Model.demandante_email</h2>
     <h2>
         Reclamado:<br />
-       
-            Email: @Model.demandante_nombre_demandado<br />
-            Direccion: @Model.demandante_direccion_demandado<br />
-    
+
+        Email: @Model.demandante_nombre_demandado<br />
+        Direccion: @Model.demandante_direccion_demandado<br />
+
+    </h2>
+    <h2>
+        Video evidencia:   <br />
+        <video id="video_reclamo" style="height:200px; width:90%;" controls>
+            <source src="@Url.Content(Model.demandante_video)" type="video/mp4">
+
+
+        </video>
+    </h2><br />
+    <h2>
+        Foto evidencia:   <a href="@Url.Content(Model.demandante_dni)"><img style="height:400px; width:100%" src="@Url.Content(Model.demandante_documentos)" /></a>
     </h2>
 </div>
-
+<br />
 <h1 style="color:red;">Respuesta al reclamo</h1><br />
 <h2>DNI Apoderado legal: @Model.dni_respuesta</h2><br />
 <h2>Respuesta: @Model.respuesta</h2><br />
