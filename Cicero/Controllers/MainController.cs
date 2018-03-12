@@ -32,7 +32,7 @@ namespace Cicero.Controllers
         }
 
         [HttpPost]
-        public IActionResult PresentarReclamo(IFormFile demandante_dni, IFormFile demandante_video, IFormFile demandante_documentos, string demandante_email , string demandante_nombre_demandado, string demandante_direccion_demandado, string demandante_comentario,  string solicitud)
+        public async Task<IActionResult> PresentarReclamo(IFormFile demandante_dni, IFormFile demandante_video, IFormFile demandante_documentos, string demandante_email , string demandante_nombre_demandado, string demandante_direccion_demandado, string demandante_comentario,  string solicitud)
         {
 
             //Task<bool> video = Savefile(video_demandante, "videos", video_demandante.FileName);
@@ -44,21 +44,21 @@ namespace Cicero.Controllers
             nombre_video.Append("_video_demandante.mp4");
             StringBuilder video_url = new StringBuilder("https://ciceron.blob.core.windows.net/videosdemandante/");
             video_url.Append(nombre_video);
-            Task<bool> video = Savefile(demandante_video, "videosdemandante", nombre_video.ToString());
+            bool video = await Savefile(demandante_video, "videosdemandante", nombre_video.ToString());
             
 
             StringBuilder nombre_foto = new StringBuilder(expediente.codigo_expediente.ToString());
             nombre_foto.Append("_foto_dni_demandante.jpg");
             StringBuilder foto_dni_url = new StringBuilder("https://ciceron.blob.core.windows.net/dnis/");
             foto_dni_url.Append(nombre_foto);
-            Task<bool> imagen = Savefile(demandante_dni, "dnis", nombre_foto.ToString());
+            bool imagen = await Savefile(demandante_dni, "dnis", nombre_foto.ToString());
 
 
             StringBuilder nombre_doc = new StringBuilder(expediente.codigo_expediente.ToString());
             nombre_doc.Append("_foto_extra_demandante.jpg");
             StringBuilder foto_extra_url = new StringBuilder("https://ciceron.blob.core.windows.net/fotosextrademandante/");
             foto_extra_url.Append(nombre_doc);
-            Task<bool> doc = Savefile(demandante_documentos, "fotosextrademandante", nombre_doc.ToString());
+            bool doc = await Savefile(demandante_documentos, "fotosextrademandante", nombre_doc.ToString());
 
 
             
@@ -78,6 +78,7 @@ namespace Cicero.Controllers
 
         private async Task<bool> Savefile(IFormFile file, string path, string file_name)
         {
+            bool success = true;
             //Stream stream
             //await file.CopyToAsync(stream);
             // Retrieve storage account from connection string.
@@ -92,11 +93,18 @@ namespace Cicero.Controllers
             // Retrieve reference to a blob named "myblob".
             CloudBlockBlob blockBlob = container.GetBlockBlobReference(file_name);
 
+            try
+            {
+                await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
+            }
+            catch(Exception e)
+            {
+                success = false;
+            }
+
             
 
-            await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
-
-            bool success = true;
+            
 
             return success;
 
