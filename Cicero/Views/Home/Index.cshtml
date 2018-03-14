@@ -196,36 +196,48 @@
         <div class="form-group">
 
 
-            <input required  value="{{demandado.nombre}}" ng-model="demandado.nombre" form="envio-reclamo" class="form-control" type="text" placeholder="Nombre de la empresa reclamada" name="demandante_nombre_demandado" />
-            <input required  value="{{demandado.ruc}}" ng-model="demandado.ruc" form="envio-reclamo" class="form-control" type="text" placeholder="Dirección de la empresa reclamada" name="demandante_direccion_demandado" />
+            <input required value="{{demandado.nombre}}" ng-model="demandado.nombre" form="envio-reclamo" class="form-control" type="text" placeholder="Nombre de la empresa reclamada" name="demandante_nombre_demandado" />
+            <input required value="{{demandado.ruc}}" ng-model="demandado.ruc" form="envio-reclamo" class="form-control" type="text" placeholder="Dirección de la empresa reclamada" name="demandante_direccion_demandado" />
 
         </div>
         <div class="row">
             <p style="text-align:center">
-                Cuenta los hechos o adjunta pruebas
+                Adjunta tu evidencia
                 <br />
                 <div class="col-xs-6" style="text-align:center;">
                     <label>
-                        <img class="input_vector" src="~/images/anadirVideo.png" /><input  ng-click="video=true;" id="video" onchange="previewVideo('#video', '#video_reclamo')" style="display: none;" form="envio-reclamo" type="file" name="demandante_video" ng-model="reclamo.video" />
+                        <img class="input_vector" src="~/images/anadirFoto.png" /><input ng-click="foto2=true;" onchange="previewImage('#input-pruebas2','#foto-pruebas2')" id="input-pruebas2" style="display: none;" form="envio-reclamo" type="file" name="demandante_documentos" />
                     </label><br />
-                    <div ng-show="video"  style="text-align:center;">
-                        <video id="video_reclamo" style="height:200px; width:90%;" controls>
-                            <source src="mov_bbb.mp4" type="video/mp4">
-
-
-                        </video>
-                    </div>
+                    <div ng-show="foto2" style="text-align:center;"><img style="width:90%;" id="foto-pruebas2" src="" height="200" /></div>
                 </div>
                 <div class="col-xs-6" style="text-align:center;">
                     <label>
-                        <img class="input_vector" src="~/images/anadirFoto.png" /><input ng-click="foto2=true;" onchange="previewImage('#input-pruebas','#foto-pruebas')" id="input-pruebas" style="display: none;" form="envio-reclamo" type="file" name="demandante_documentos" />
+                        <img class="input_vector" src="~/images/anadirFoto.png" /><input ng-click="foto3=true;" onchange="previewImage('#input-pruebas3','#foto-pruebas3')" id="input-pruebas3" style="display: none;" form="envio-reclamo" type="file" name="demandante_documentos" />
                     </label><br />
-                    <div ng-show="foto2" style="text-align:center;"><img style="width:90%;" id="foto-pruebas" src="" height="200" /></div>
+                    <div ng-show="foto3" style="text-align:center;"><img style="width:90%;" id="foto-pruebas3" src="" height="200" /></div>
+                </div>
+            </p>
+        </div>
+        <div class="row">
+            <p style="text-align:center">
+                
+                <br />
+                <div class="col-xs-6" style="text-align:center;">
+                    <label>
+                        <img class="input_vector" src="~/images/anadirFoto.png" /><input ng-click="foto4=true;" onchange="previewImage('#input-pruebas4','#foto-pruebas4')" id="input-pruebas4" style="display: none;" form="envio-reclamo" type="file" name="demandante_documentos" />
+                    </label><br />
+                    <div ng-show="foto4" style="text-align:center;"><img style="width:90%;" id="foto-pruebas4" src="" height="200" /></div>
+                </div>
+                <div class="col-xs-6" style="text-align:center;">
+                    <label>
+                        <img class="input_vector" src="~/images/anadirFoto.png" /><input ng-click="foto5=true;" onchange="previewImage('#input-pruebas5','#foto-pruebas5')" id="input-pruebas5" style="display: none;" form="envio-reclamo" type="file" name="demandante_documentos" />
+                    </label><br />
+                    <div ng-show="foto5" style="text-align:center;"><img style="width:90%;" id="foto-pruebas5" src="" height="200" /></div>
                 </div>
             </p>
         </div>
 
-
+        <br />
         <div class="row" style="margin-top:5px;">
 
             <p style="text-align:center;">¿Qué solicitas?</p>
@@ -240,14 +252,15 @@
 
 
                 <label class="btn btn-block btn-success " ng-click="textfield=true;"><input ng-model="solicitud.seleccion" form="envio-reclamo" type="radio" name="solicitud" value="Otro">Otro (específica) </label>
-                <input ng-show="textfield" ng-model="solicitud.otro" id="texto-solicitud" type="text" form="envio-reclamo" class="form-control" name="solicitud" />
+                <input ng-show="textfield" ng-model="solicitud.otro" id="texto-solicitud" type="text" form="envio-reclamo" class="form-control" name="solicitud" placeholder="¿Qué deseas?" />
             </div>
 
 
         </div>
 
+        <br />
         <div class="row" style="margin-top:5px;">
-            <p style="text-align:center;">¿Deseas añadir algo? (Opcional)</p>
+            <p style="text-align:center;">Cuentanos lo que sucedio</p>
             <div style="text-align:center">
                 <textarea form="envio-reclamo" class="form-control" name="demandante_comentario"></textarea>
             </div>

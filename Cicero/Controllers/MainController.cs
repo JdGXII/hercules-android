@@ -32,20 +32,11 @@ namespace Cicero.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PresentarReclamo(IFormFile demandante_dni, IFormFile demandante_video, IFormFile demandante_documentos, string demandante_email , string demandante_nombre_demandado, string demandante_direccion_demandado, string demandante_comentario,  string solicitud)
+        public async Task<IActionResult> PresentarReclamo(IFormFile demandante_dni, ICollection<IFormFile> demandante_documentos, string demandante_email, string demandante_nombre_demandado, string demandante_direccion_demandado, string demandante_comentario, string solicitud)
         {
 
-            //Task<bool> video = Savefile(video_demandante, "videos", video_demandante.FileName);
-            
-            
             Expediente expediente = new Expediente();
-
-            StringBuilder nombre_video = new StringBuilder(expediente.codigo_expediente.ToString());
-            nombre_video.Append("_video_demandante.mp4");
-            StringBuilder video_url = new StringBuilder("https://ciceron.blob.core.windows.net/videosdemandante/");
-            video_url.Append(nombre_video);
-            bool video = await Savefile(demandante_video, "videosdemandante", nombre_video.ToString());
-            
+            List<string> foto_urls = new List<string>();
 
             StringBuilder nombre_foto = new StringBuilder(expediente.codigo_expediente.ToString());
             nombre_foto.Append("_foto_dni_demandante.jpg");
@@ -53,19 +44,24 @@ namespace Cicero.Controllers
             foto_dni_url.Append(nombre_foto);
             bool imagen = await Savefile(demandante_dni, "dnis", nombre_foto.ToString());
 
+            int counter = 1;
 
-            StringBuilder nombre_doc = new StringBuilder(expediente.codigo_expediente.ToString());
-            nombre_doc.Append("_foto_extra_demandante.jpg");
-            StringBuilder foto_extra_url = new StringBuilder("https://ciceron.blob.core.windows.net/fotosextrademandante/");
-            foto_extra_url.Append(nombre_doc);
-            bool doc = await Savefile(demandante_documentos, "fotosextrademandante", nombre_doc.ToString());
+            foreach (IFormFile foto in demandante_documentos)
+            {
+                String nombre_foto_evidencia = $"{expediente.codigo_expediente}_foto_extra_demandante{counter}.jpg";
+                String foto_evidencia_url = $"https://ciceron.blob.core.windows.net/fotosextrademandante/casos/" +
+                    $"{expediente.codigo_expediente}/{nombre_foto_evidencia}";
+                bool doc = await Savefile(foto, $"fotosextrademandante/casos/{expediente.codigo_expediente}",
+                    nombre_foto_evidencia.ToString());
 
+                foto_urls.Add(foto_evidencia_url);
 
-            
+                counter++;
+            }            
 
             DBConnection testconn = new DBConnection();
-            var query = $"INSERT INTO Expedientes(codigo, email_demandante, nombre_demandado, direccion_demandado, comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url, foto_reclamo_url, video_reclamo_url, demandante_acepta_terminos) " +
-                $"VALUES ('{expediente.codigo_expediente}', '{demandante_email}', '{demandante_nombre_demandado}', '{demandante_direccion_demandado}', '{demandante_comentario}', '{solicitud}', '{foto_dni_url}', '{foto_extra_url}', '{video_url}', 1)";
+            var query = $"INSERT INTO Expedientes(codigo, email_demandante, nombre_demandado, direccion_demandado, comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url, foto_reclamo_url1, foto_reclamo_url2, foto_reclamo_url3, foto_reclamo_url4, demandante_acepta_terminos) " +
+                $"VALUES ('{expediente.codigo_expediente}', '{demandante_email}', '{demandante_nombre_demandado}', '{demandante_direccion_demandado}', '{demandante_comentario}', '{solicitud}', '{foto_dni_url}', '{foto_urls[0]}', '{foto_urls[1]}', '{foto_urls[2]}', '{foto_urls[3]}', 1)";
 
 
             bool v = testconn.WriteToTest(query);
@@ -135,7 +131,9 @@ namespace Cicero.Controllers
         {
             ModeloExpediente expediente = new ModeloExpediente();
             DBConnection testconn = new DBConnection();
-            SqlDataReader dataReader = testconn.ReadFromTest($"SELECT codigo, email_demandante, nombre_demandado, direccion_demandado, comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url, foto_reclamo_url, video_reclamo_url FROM Expedientes WHERE codigo = '{codigo_expediente}'");
+            SqlDataReader dataReader = testconn.ReadFromTest($"SELECT codigo, email_demandante, nombre_demandado, direccion_demandado, comentario_adicional_reclamo, " +
+                $"solicitud_reclamo, foto_dni_url, " +
+                $"foto_reclamo_url1, foto_reclamo_url2, foto_reclamo_url3, foto_reclamo_url4 FROM Expedientes WHERE codigo = '{codigo_expediente}'");
             while (dataReader.Read())
             {
 
@@ -147,11 +145,18 @@ namespace Cicero.Controllers
                 string comentario = dataReader.GetString(4);
                 string solicitud = dataReader.GetString(5);
                 string foto_dni = dataReader.GetString(6);
-                string foto_reclamo = dataReader.GetString(7);
-                string video = dataReader.GetString(8);
+                string foto_reclamo1 = dataReader.GetString(7);
+                string foto_reclamo2 = dataReader.GetString(8);
+                string foto_reclamo3 = dataReader.GetString(9);
+                string foto_reclamo4 = dataReader.GetString(10);
 
+                List<string> fotos_reclamo = new List<string>();
+                fotos_reclamo.Add(foto_reclamo1);
+                fotos_reclamo.Add(foto_reclamo2);
+                fotos_reclamo.Add(foto_reclamo3);
+                fotos_reclamo.Add(foto_reclamo4);
 
-                expediente = new ModeloExpediente(codigo, foto_dni, email, nombre, direccion, solicitud, comentario, video, foto_reclamo);
+                expediente = new ModeloExpediente(codigo, foto_dni, email, nombre, direccion, solicitud, comentario, fotos_reclamo);
 
             }
             testconn.CloseDataReader();

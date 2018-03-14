@@ -39,7 +39,9 @@ namespace Cicero.Controllers
         {
             List<ModeloExpediente> expedientes = new List<ModeloExpediente>();
             DBConnection testconn = new DBConnection();
-            SqlDataReader dataReader = testconn.ReadFromTest("SELECT codigo, email_demandante, nombre_demandado, direccion_demandado, comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url, foto_reclamo_url, video_reclamo_url FROM Expedientes");
+            SqlDataReader dataReader = testconn.ReadFromTest("SELECT codigo, email_demandante, nombre_demandado, direccion_demandado, " +
+                "comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url," +
+                "foto_reclamo_url1, foto_reclamo_url2, foto_reclamo_url3, foto_reclamo_url4 FROM Expedientes");
             while (dataReader.Read())
             {
                 
@@ -50,10 +52,18 @@ namespace Cicero.Controllers
                 string comentario = dataReader.GetString(4);
                 string solicitud = dataReader.GetString(5);
                 string foto_dni = dataReader.GetString(6);
-                string foto_reclamo = dataReader.GetString(7);
-                string video = dataReader.GetString(8);
+                string foto_reclamo1 = dataReader.GetString(7);
+                string foto_reclamo2 = dataReader.GetString(8);
+                string foto_reclamo3 = dataReader.GetString(9);
+                string foto_reclamo4 = dataReader.GetString(10);
+                List<string> fotos_reclamo = new List<string>();
+                fotos_reclamo.Add(foto_reclamo1);
+                fotos_reclamo.Add(foto_reclamo2);
+                fotos_reclamo.Add(foto_reclamo3);
+                fotos_reclamo.Add(foto_reclamo4);
 
-                ModeloExpediente expediente = new ModeloExpediente(codigo, foto_dni, email, nombre, direccion, solicitud, comentario, video, foto_reclamo);
+
+                ModeloExpediente expediente = new ModeloExpediente(codigo, foto_dni, email, nombre, direccion, solicitud, comentario, fotos_reclamo);
                 expedientes.Add(expediente);
             }
             testconn.CloseDataReader();
@@ -67,7 +77,10 @@ namespace Cicero.Controllers
         {
             ModeloExpediente expediente = new ModeloExpediente();
             DBConnection testconn = new DBConnection();
-            SqlDataReader dataReader = testconn.ReadFromTest($"SELECT codigo, email_demandante, nombre_demandado, direccion_demandado, comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url, foto_reclamo_url, video_reclamo_url, apoderado_dni_url, respuesta FROM Expedientes WHERE codigo = '{codigo_expediente}'");
+            SqlDataReader dataReader = testconn.ReadFromTest($"SELECT codigo, email_demandante, nombre_demandado, direccion_demandado, " +
+                $"comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url, " +
+                $"fapoderado_dni_url, respuesta" +
+                $"foto_reclamo_url1, foto_reclamo_url2, foto_reclamo_url3, foto_reclamo_url4 FROM Expedientes WHERE codigo = '{codigo_expediente}'");
             while (dataReader.Read())
             {
                 
@@ -79,10 +92,18 @@ namespace Cicero.Controllers
                 string comentario = dataReader.GetString(4);
                 string solicitud = dataReader.GetString(5);
                 string foto_dni = dataReader.GetString(6);
-                string foto_reclamo = dataReader.GetString(7);
-                string video = dataReader.GetString(8);
+                string foto_reclamo1 = dataReader.GetString(9);
+                string foto_reclamo2 = dataReader.GetString(10);
+                string foto_reclamo3 = dataReader.GetString(11);
+                string foto_reclamo4 = dataReader.GetString(12);
                 string dni_respuesta = "No hay respuesta aun";
                 string respuesta = "No hay respuesta aun";
+                List<string> fotos_reclamo = new List<string>();
+                fotos_reclamo.Add(foto_reclamo1);
+                fotos_reclamo.Add(foto_reclamo2);
+                fotos_reclamo.Add(foto_reclamo3);
+                fotos_reclamo.Add(foto_reclamo4);
+
                 if (!dataReader.IsDBNull(9))
                 {
                     dni_respuesta = dataReader.GetString(9);
@@ -92,7 +113,7 @@ namespace Cicero.Controllers
                     respuesta = dataReader.GetString(10);
                 }
 
-                expediente = new ModeloExpediente(codigo, foto_dni, email, nombre, direccion, solicitud, comentario, video, foto_reclamo, dni_respuesta, respuesta);
+                expediente = new ModeloExpediente(codigo, foto_dni, email, nombre, direccion, solicitud, comentario, fotos_reclamo, dni_respuesta, respuesta);
                 
             }
             testconn.CloseDataReader();

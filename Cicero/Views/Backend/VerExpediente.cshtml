@@ -18,16 +18,15 @@
         Direccion: @Model.demandante_direccion_demandado<br />
 
     </h2>
-    <h2>
-        Video evidencia:   <br />
-        <video id="video_reclamo" style="height:200px; width:90%;" controls>
-            <source src="@Url.Content(Model.demandante_video)" type="video/mp4">
 
-
-        </video>
-    </h2><br />
     <h2>
-        Foto evidencia:   <a href="@Url.Content(Model.demandante_dni)"><img style="height:400px; width:100%" src="@Url.Content(Model.demandante_documentos)" /></a>
+        Foto evidencia:
+        @foreach(string foto in Model.demandante_documentos)
+        {
+            <a href="@Url.Content(foto)"><img style="height:400px; width:100%" src="@Url.Content(foto)" /></a>
+            <br />
+        }
+        
     </h2>
 </div>
 <br />
