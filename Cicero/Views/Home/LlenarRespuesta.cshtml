@@ -39,10 +39,10 @@
             Agrega una foto de tu DNI<br />
             <label>
                 <img class="input_vector" src="~/images/añadirDNI.png" />
-                <input ng-click="foto3=true;" onchange="previewImage('#input-dni-representante','#foto-dni-representante')" id="input-dni-representante" style="display: none;" form="envio-respuesta" type="file" name="dni_poder_legal" />
+                <input ng-click="fotodni=true;" onchange="previewImage('#input-dni-representante','#foto-dni-representante')" id="input-dni-representante" style="display: none;" form="envio-respuesta" type="file" name="dni_poder_legal" />
 
             </label>
-            <div ng-show="foto3" style="text-align:center;"><img style="width:90%;" id="foto-dni-representante" src="" height="200" /></div>
+            <div ng-show="fotodni" style="text-align:center;"><img style="width:90%;" id="foto-dni-representante" src="" height="200" /></div>
         </p>
 
         <div style="width:100%;text-align:center;padding:10px;">
