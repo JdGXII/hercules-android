@@ -21,18 +21,28 @@
 
     <h2>
         Foto evidencia:
-        @foreach(string foto in Model.demandante_documentos)
+        @foreach (string foto in Model.demandante_evidencias)
         {
             <a href="@Url.Content(foto)"><img style="height:400px; width:100%" src="@Url.Content(foto)" /></a>
             <br />
         }
-        
+
     </h2>
 </div>
 <br />
 <h1 style="color:red;">Respuesta al reclamo</h1><br />
-<h2>DNI Apoderado legal: @Model.dni_respuesta</h2><br />
+<h2>DNI Apoderado legal:</h2><a href="@Url.Content(Model.dni_respuesta)"><img style="height:400px; width:100%" src="@Url.Content(Model.dni_respuesta)" /></a><br />
+<h2>Poder legal: <a href="@Url.Content(Model.demandado_poder_legal)">Bajar poder</a></h2><br />
 <h2>Respuesta: @Model.respuesta</h2><br />
+<h2>
+    Foto evidencia:
+    @foreach (string foto in Model.demandado_evidencias)
+    {
+        <a href="@Url.Content(foto)"><img style="height:400px; width:100%" src="@Url.Content(foto)" /></a>
+        <br />
+    }
+
+</h2>
 <a asp-action="ListaExpedientes" asp-controller="Backend">Regresar a lista de expedientes</a>
 
 

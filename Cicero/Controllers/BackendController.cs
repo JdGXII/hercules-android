@@ -79,8 +79,10 @@ namespace Cicero.Controllers
             DBConnection testconn = new DBConnection();
             SqlDataReader dataReader = testconn.ReadFromTest($"SELECT codigo, email_demandante, nombre_demandado, direccion_demandado, " +
                 $"comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url, " +
-                $"fapoderado_dni_url, respuesta" +
-                $"foto_reclamo_url1, foto_reclamo_url2, foto_reclamo_url3, foto_reclamo_url4 FROM Expedientes WHERE codigo = '{codigo_expediente}'");
+                $"apoderado_dni_url, respuesta," +
+                $"foto_reclamo_url1, foto_reclamo_url2, foto_reclamo_url3, foto_reclamo_url4," +
+                $"foto_respuesta_url1, foto_respuesta_url2, foto_respuesta_url3, foto_respuesta_url4," +
+                $"poder_representacion_foto_url FROM Expedientes WHERE codigo = '{codigo_expediente}'");
             while (dataReader.Read())
             {
                 
@@ -98,22 +100,60 @@ namespace Cicero.Controllers
                 string foto_reclamo4 = dataReader.GetString(12);
                 string dni_respuesta = "No hay respuesta aun";
                 string respuesta = "No hay respuesta aun";
+
+                string foto_respuesta1 = "#";
+                string foto_respuesta2 = "#";
+                string foto_respuesta3 = "#";
+                string foto_respuesta4 = "#";
+
+                string respuesta_poder = "#";
+
                 List<string> fotos_reclamo = new List<string>();
                 fotos_reclamo.Add(foto_reclamo1);
                 fotos_reclamo.Add(foto_reclamo2);
                 fotos_reclamo.Add(foto_reclamo3);
                 fotos_reclamo.Add(foto_reclamo4);
 
-                if (!dataReader.IsDBNull(9))
+                if (!dataReader.IsDBNull(7))
                 {
-                    dni_respuesta = dataReader.GetString(9);
+                    dni_respuesta = dataReader.GetString(7);
                 }
-                if (!dataReader.IsDBNull(10))
+                if (!dataReader.IsDBNull(8))
                 {
-                    respuesta = dataReader.GetString(10);
+                    respuesta = dataReader.GetString(8);
                 }
 
-                expediente = new ModeloExpediente(codigo, foto_dni, email, nombre, direccion, solicitud, comentario, fotos_reclamo, dni_respuesta, respuesta);
+                if (!dataReader.IsDBNull(13))
+                {
+                    foto_respuesta1 = dataReader.GetString(13);
+                }
+                if (!dataReader.IsDBNull(14))
+                {
+                    foto_respuesta2 = dataReader.GetString(14);
+                }
+                if (!dataReader.IsDBNull(15))
+                {
+                    foto_respuesta3 = dataReader.GetString(15);
+                }
+                if (!dataReader.IsDBNull(16))
+                {
+                    foto_respuesta4 = dataReader.GetString(16);
+                }
+                if (!dataReader.IsDBNull(17))
+                {
+                    respuesta_poder = dataReader.GetString(17);
+                }
+
+                List<string> fotos_respuesta = new List<string>();
+                fotos_respuesta.Add(foto_respuesta1);
+                fotos_respuesta.Add(foto_respuesta2);
+                fotos_respuesta.Add(foto_respuesta3);
+                fotos_respuesta.Add(foto_respuesta4);
+
+
+
+                expediente = new ModeloExpediente(codigo, foto_dni, email, nombre, direccion, 
+                    solicitud, comentario, fotos_reclamo, dni_respuesta, respuesta, fotos_respuesta, respuesta_poder);
                 
             }
             testconn.CloseDataReader();

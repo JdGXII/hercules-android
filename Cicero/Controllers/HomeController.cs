@@ -117,18 +117,49 @@ namespace Cicero.Controllers
         }
 
         [HttpPost]
-        public IActionResult SubirRespuestaReclamo(string expediente, IFormFile dni_poder_legal, IFormFile poder_legal, string comentario_demandado)
+        public async Task<IActionResult> SubirRespuestaReclamo(string expediente, IFormFile dni_poder_legal, 
+            IFormFile poder_legal, ICollection<IFormFile> demandado_documentos, string comentario_demandado)
         {
 
             StringBuilder nombre_foto = new StringBuilder(expediente);
             nombre_foto.Append("_foto_dni_representante.jpg");
             StringBuilder foto_dni_url = new StringBuilder("https://ciceron.blob.core.windows.net/respuestademandado/");
             foto_dni_url.Append(nombre_foto);
-            Task<bool> imagen = Savefile(dni_poder_legal, "respuestademandado", nombre_foto.ToString());
+            bool imagen = await Savefile(dni_poder_legal, "respuestademandado", nombre_foto.ToString());
+
+            StringBuilder nombre_poder = new StringBuilder(expediente);
+            nombre_poder.Append("_poder_representante.pdf");
+            StringBuilder poder_url = new StringBuilder("https://ciceron.blob.core.windows.net/respuestademandado/");
+            poder_url.Append(nombre_poder);
+            bool poder = await Savefile(poder_legal, "respuestademandado", nombre_poder.ToString());
+
+            int counter = 1;
+
+            List<string> foto_urls = new List<string>();
+
+            foreach (IFormFile foto in demandado_documentos)
+            {
+                String nombre_foto_evidencia = $"{expediente}_foto_evidencia_demandado{counter}.jpg";
+                String foto_evidencia_url = $"https://ciceron.blob.core.windows.net/respuestademandado/" +
+                    $"{nombre_foto_evidencia}";
+                bool doc = await Savefile(foto, "respuestademandado",
+                    nombre_foto_evidencia.ToString());
+
+                foto_urls.Add(foto_evidencia_url);
+
+                counter++;
+            }
 
             DBConnection testconn = new DBConnection();
  
-            string query = $"UPDATE Expedientes SET respuesta= '{comentario_demandado}', apoderado_dni_url= 'verificando' WHERE codigo = '{expediente}'";
+            string query = $"UPDATE Expedientes SET respuesta= '{comentario_demandado}'" +
+                $", apoderado_dni_url= '{foto_dni_url}', poder_representacion_foto_url = '{poder_url}', " +
+                $"foto_respuesta_url1= '{foto_urls[0]}', " +
+                $"foto_respuesta_url2= '{foto_urls[1]}', " +
+                $"foto_respuesta_url3= '{foto_urls[2]}', " +
+                $"foto_respuesta_url4= '{foto_urls[3]}' " +
+                $"WHERE codigo = '{expediente}'";
+
             bool b = testconn.WriteToTest(query);
             if (b)
             {
