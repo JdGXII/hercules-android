@@ -8,12 +8,12 @@
 
     <h2>Login</h2>
     <br />
-
+    <p style="color:red">@ViewBag.Success</p>
     <div class="row">
         @using (Html.BeginForm("Login", "Backend", new { id = "login", name = "hacerLogin" }))
         {
             <div class="form-group">
-                <input class="form-control" type="text" placeholder="Usuario" name="usuario"/>
+                <input class="form-control" type="text" placeholder="Usuario" name="username"/>
                 <input class="form-control" type="password" placeholder="Contraseña" name="password" />
                 <br />
                 <button class="btn btn-cicero"><b>Entrar</b></button>

@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Threading.Tasks;
 using Cicero.DataAccess;
 using Cicero.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Http;
 
 namespace Cicero.Controllers
 {
@@ -17,23 +16,87 @@ namespace Cicero.Controllers
 
         public IActionResult Index()
         {
+            if(TempData["failedlogin"] != null)
+            {
+                ViewBag.Success = TempData["failedlogin"].ToString();
+            }
+
             return View();
         }
 
-        [HttpPost]
-        public IActionResult Login(string usuario, string password)
+        private bool doLogin(string username, string password)
         {
-            if(this.usuario == "cicero" && this.password == "cicero")
+            bool login = false;
+            DBConnection testconn = new DBConnection();
+
+            string query = "Select username, password, access_level FROM Users Where username = @username";
+            Dictionary<string, Object> query_params = new Dictionary<string, Object>();
+            query_params.Add("@username", username);
+
+
+            try
             {
-                this.login = true;
+                SqlDataReader dataReader;
+                dataReader = testconn.ReadFromProduction(query, query_params);
+
+
+                //if email exists in db
+                if (dataReader.Read())
+                {
+                    //get password from db where it is hashed
+                    string password_from_db = dataReader.GetValue(1).ToString();
+                    //if password matches, login is succesful
+                    if (password == password_from_db)
+                    {
+                        HttpContext.Session.SetString("username", dataReader.GetValue(0).ToString()); 
+                        HttpContext.Session.SetString("access", dataReader.GetValue(2).ToString());
+
+
+                        //ViewData["sessionString"] = System.Web.HttpContext.Current.Session["userpermission"];
+                        testconn.CloseDataReader();
+                        testconn.CloseConnection();
+
+                        login = true;
+
+
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                testconn.CloseDataReader();
+                testconn.CloseConnection();
+                
+                login = false;
+            }
+            testconn.CloseDataReader();
+            testconn.CloseConnection();
+            return login;
+
+        }
+
+        [HttpPost]
+        public ActionResult Login(string username, string password)
+        {
+            bool login = doLogin(username, password);
+
+            if (login)  //(username == this.username) && (password == this.password))
+            {
+
                 return RedirectToAction("ListaExpedientes");
+
             }
             else
             {
+
+                TempData["failedlogin"] = "Credenciales no reconocidas.";
                 return RedirectToAction("Index");
             }
+
+
+
         }
-    
+
 
         private List<ModeloExpediente> getExpedientes()
         {
@@ -165,30 +228,43 @@ namespace Cicero.Controllers
 
         public IActionResult ListaExpedientes()
         {
-            var modelo = getExpedientes();
-            return View(modelo);
-            /*if (login)
+            if(HttpContext.Session.GetString("access") != null)
             {
-
-            }
+                if (HttpContext.Session.GetString("access") == "3")
+                {
+                    var modelo = getExpedientes();
+                    return View(modelo);
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
+            }        
             else
             {
                 return RedirectToAction("Index");
-            }*/
+            }
         }
 
         public IActionResult VerExpediente(string id)
         {
-            var modelo = getExpediente(id);
-            return View(modelo);
-            /*if (login)
+            if (HttpContext.Session.GetString("access") != null)
             {
-
+                if (HttpContext.Session.GetString("access") == "3")
+                {
+                    var modelo = getExpediente(id);
+                    return View(modelo);
+                }
+                else
+                {
+                    return RedirectToAction("Index");
+                }
             }
             else
             {
                 return RedirectToAction("Index");
-            }*/
+            }
+
         }
     }
     
