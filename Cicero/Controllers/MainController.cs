@@ -37,6 +37,10 @@ namespace Cicero.Controllers
 
             Expediente expediente = new Expediente();
             List<string> foto_urls = new List<string>();
+            foto_urls.Add("vacio");
+            foto_urls.Add("vacio");
+            foto_urls.Add("vacio");
+            foto_urls.Add("vacio");
 
             StringBuilder nombre_foto = new StringBuilder(expediente.codigo_expediente.ToString());
             nombre_foto.Append("_foto_dni_demandante.jpg");
@@ -54,7 +58,7 @@ namespace Cicero.Controllers
                 bool doc = await Savefile(foto, $"fotosextrademandante/casos/{expediente.codigo_expediente}",
                     nombre_foto_evidencia.ToString());
 
-                foto_urls.Add(foto_evidencia_url);
+                foto_urls[counter-1] = foto_evidencia_url;
 
                 counter++;
             }            

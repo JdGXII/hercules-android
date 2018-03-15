@@ -136,6 +136,10 @@ namespace Cicero.Controllers
             int counter = 1;
 
             List<string> foto_urls = new List<string>();
+            foto_urls.Add("vacio");
+            foto_urls.Add("vacio");
+            foto_urls.Add("vacio");
+            foto_urls.Add("vacio");
 
             foreach (IFormFile foto in demandado_documentos)
             {
@@ -145,7 +149,7 @@ namespace Cicero.Controllers
                 bool doc = await Savefile(foto, "respuestademandado",
                     nombre_foto_evidencia.ToString());
 
-                foto_urls.Add(foto_evidencia_url);
+                foto_urls[counter - 1] = foto_evidencia_url;
 
                 counter++;
             }
