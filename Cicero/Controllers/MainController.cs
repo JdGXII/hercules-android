@@ -15,6 +15,8 @@ using Microsoft.WindowsAzure; // Namespace for CloudConfigurationManager
 using Microsoft.WindowsAzure.Storage; // Namespace for CloudStorageAccount
 using Microsoft.WindowsAzure.Storage.Blob; // Namespace for Blob storage types
 using Microsoft.Azure; //Namespace for CloudConfigurationManager
+using Hercules.Models;
+
 
 namespace Cicero.Controllers
 {
@@ -22,7 +24,7 @@ namespace Cicero.Controllers
     {
         private IHostingEnvironment _environment;
         private readonly ILogger _logger;
-        private string blob_string = "DefaultEndpointsProtocol=http;AccountName=ciceron;AccountKey=oW6wCmyY6AG/Fq26s4nl6m0Hsnj8tUcG6wVTdm7K4BAbPevcVzkVpACalgN7xRNKTXzVynKGRkzD4QFk4SO77g==;EndpointSuffix=core.windows.net";
+        private string blob_string = "DefaultEndpointsProtocol=https;AccountName=hercules;AccountKey=feI/YA9PoxC9tGbO7yQ5KQqrj5vL7M41UakNDkpfht8/KQwrUsqfnMp8yQx0cbj3cwr16mF8sLxA6rpglGJPGQ==;EndpointSuffix=core.windows.net";
 
 
         public MainController(IHostingEnvironment environment, ILogger<MainController> logger)
@@ -32,7 +34,7 @@ namespace Cicero.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PresentarReclamo(IFormFile demandante_dni, ICollection<IFormFile> demandante_documentos, string demandante_email, string demandante_nombre_demandado, string demandante_direccion_demandado, string demandante_comentario, string solicitud)
+        public async void GuardarFotos(ICollection<IFormFile> fotosProblema)
         {
 
             Expediente expediente = new Expediente();
@@ -42,20 +44,16 @@ namespace Cicero.Controllers
             foto_urls.Add("vacio");
             foto_urls.Add("vacio");
 
-            StringBuilder nombre_foto = new StringBuilder(expediente.codigo_expediente.ToString());
-            nombre_foto.Append("_foto_dni_demandante.jpg");
-            StringBuilder foto_dni_url = new StringBuilder("https://ciceron.blob.core.windows.net/dnis/");
-            foto_dni_url.Append(nombre_foto);
-            bool imagen = await Savefile(demandante_dni, "dnis", nombre_foto.ToString());
+
 
             int counter = 1;
 
-            foreach (IFormFile foto in demandante_documentos)
+            foreach (IFormFile foto in fotosProblema)
             {
-                String nombre_foto_evidencia = $"{expediente.codigo_expediente}_foto_extra_demandante{counter}.jpg";
+                String nombre_foto_evidencia = $"{expediente.codigo_expediente}_fotoProblema{counter}.jpg";
                 String foto_evidencia_url = $"https://ciceron.blob.core.windows.net/fotosextrademandante/casos/" +
                     $"{expediente.codigo_expediente}/{nombre_foto_evidencia}";
-                bool doc = await Savefile(foto, $"fotosextrademandante/casos/{expediente.codigo_expediente}",
+                bool doc = await Savefile(foto, $"fotosCasos/casos/{expediente.codigo_expediente}",
                     nombre_foto_evidencia.ToString());
 
                 foto_urls[counter-1] = foto_evidencia_url;
@@ -63,17 +61,86 @@ namespace Cicero.Controllers
                 counter++;
             }            
 
+        }
+
+        [HttpPost]
+        
+        public IActionResult Login(Usuario usuario)
+        {
+
+
+
+            bool login = DoLogin(usuario);
+
+            if (login)  //(username == this.username) && (password == this.password))
+            {
+
+                return RedirectToAction("MyProfile");
+
+            }
+            else
+            {
+
+                TempData["failedlogin"] = "Sign in failed. Password or email not recognized.";
+                return RedirectToAction("Index");
+            }
+
+
+
+        }
+
+        private bool DoLogin(Usuario usuario)
+        {
+            bool login = false;
             DBConnection testconn = new DBConnection();
-            var query = $"INSERT INTO Expedientes(codigo, email_demandante, nombre_demandado, direccion_demandado, comentario_adicional_reclamo, solicitud_reclamo, foto_dni_url, foto_reclamo_url1, foto_reclamo_url2, foto_reclamo_url3, foto_reclamo_url4, demandante_acepta_terminos) " +
-                $"VALUES ('{expediente.codigo_expediente}', '{demandante_email}', '{demandante_nombre_demandado}', '{demandante_direccion_demandado}', '{demandante_comentario}', '{solicitud}', '{foto_dni_url}', '{foto_urls[0]}', '{foto_urls[1]}', '{foto_urls[2]}', '{foto_urls[3]}', 1)";
+
+            string query = "Select Nombre, Email, Id, Telefono, Password from Usuarios Where Email = @email";
+            Dictionary<string, Object> query_params = new Dictionary<string, Object>();
+            query_params.Add("@email", usuario.Email);
 
 
-            bool v = testconn.WriteToTest(query);
+            try
+            {
+                SqlDataReader dataReader;
+                dataReader = testconn.ReadFromProduction(query, query_params);
+
+
+                //if email exists in db
+                if (dataReader.Read())
+                {
+                    //get password from db where it is hashed
+                    string dbPassword = dataReader.GetValue(4).ToString();
+                    //if password matches, login is succesful
+                    if (dbPassword == usuario.Password)
+                    {
+                        HttpContext.Session.SetString("Telefono",   dataReader.GetValue(3).ToString());
+                        HttpContext.Session.SetString("username", dataReader.GetValue(0).ToString());
+                        HttpContext.Session.SetString("userid", dataReader.GetValue(2).ToString());
+                        HttpContext.Session.SetString("email", dataReader.GetValue(1).ToString());
+                        
+                        //ViewData["sessionString"] = System.Web.HttpContext.Current.Session["userpermission"];
+                        testconn.CloseDataReader();
+                        testconn.CloseConnection();
+
+                        login = true;
+
+
+                    }
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                testconn.CloseDataReader();
+                testconn.CloseConnection();
+                //System.Web.HttpContext.Current.Session["exception"] = e.ToString();
+                login = false;
+            }
+            testconn.CloseDataReader();
             testconn.CloseConnection();
+            return login;
 
-            TempData["codigo_expediente"] = expediente.codigo_expediente;
-            TempData["email"] = demandante_email;
-            return RedirectToAction("NumeroExpediente", "Home");
         }
 
         private async Task<bool> Savefile(IFormFile file, string path, string file_name)
@@ -115,59 +182,6 @@ namespace Cicero.Controllers
         {
 
             return RedirectToAction("Index", "Home");
-        }
-
-        public string getExpediente(string expediente)
-        {
-            ModeloExpediente exp = buscarExpediente(expediente);
-            if(exp.codigo_expediente != "vacio")
-            {
-                return "<p style='text-align:center'>El status de tu reclamo es: en verificacion</p>";
-            }
-            else
-            {
-                return "<p style='text-align:center'>Reclamo no encontrado. Porfavor revise el numero expediente e intente de nuevo</p>";
-                
-            }
-        }
-
-        private ModeloExpediente buscarExpediente(string codigo_expediente)
-        {
-            ModeloExpediente expediente = new ModeloExpediente();
-            DBConnection testconn = new DBConnection();
-            SqlDataReader dataReader = testconn.ReadFromTest($"SELECT codigo, email_demandante, nombre_demandado, direccion_demandado, comentario_adicional_reclamo, " +
-                $"solicitud_reclamo, foto_dni_url, " +
-                $"foto_reclamo_url1, foto_reclamo_url2, foto_reclamo_url3, foto_reclamo_url4 FROM Expedientes WHERE codigo = '{codigo_expediente}'");
-            while (dataReader.Read())
-            {
-
-
-                string codigo = dataReader.GetString(0);
-                string email = dataReader.GetString(1);
-                string nombre = dataReader.GetString(2);
-                string direccion = dataReader.GetString(3);
-                string comentario = dataReader.GetString(4);
-                string solicitud = dataReader.GetString(5);
-                string foto_dni = dataReader.GetString(6);
-                string foto_reclamo1 = dataReader.GetString(7);
-                string foto_reclamo2 = dataReader.GetString(8);
-                string foto_reclamo3 = dataReader.GetString(9);
-                string foto_reclamo4 = dataReader.GetString(10);
-
-                List<string> fotos_reclamo = new List<string>();
-                fotos_reclamo.Add(foto_reclamo1);
-                fotos_reclamo.Add(foto_reclamo2);
-                fotos_reclamo.Add(foto_reclamo3);
-                fotos_reclamo.Add(foto_reclamo4);
-
-                expediente = new ModeloExpediente(codigo, foto_dni, email, nombre, direccion, solicitud, comentario, fotos_reclamo);
-
-            }
-            testconn.CloseDataReader();
-            testconn.CloseConnection();
-            return expediente;
-
-
         }
     }
 }
