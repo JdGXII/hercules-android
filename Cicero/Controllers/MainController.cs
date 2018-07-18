@@ -51,7 +51,7 @@ namespace Cicero.Controllers
             foreach (IFormFile foto in fotosProblema)
             {
                 String nombre_foto_evidencia = $"{expediente.codigo_expediente}_fotoProblema{counter}.jpg";
-                String foto_evidencia_url = $"https://ciceron.blob.core.windows.net/fotosextrademandante/casos/" +
+                String foto_evidencia_url = $"https://hercules.blob.core.windows.net/casos/" +
                     $"{expediente.codigo_expediente}/{nombre_foto_evidencia}";
                 bool doc = await Savefile(foto, $"fotosCasos/casos/{expediente.codigo_expediente}",
                     nombre_foto_evidencia.ToString());
