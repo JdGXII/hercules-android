@@ -56,15 +56,15 @@ namespace Cicero.Controllers
                 bool doc = await Savefile(foto, $"fotosCasos/casos/{expediente.codigo_expediente}",
                     nombre_foto_evidencia.ToString());
 
-                foto_urls[counter-1] = foto_evidencia_url;
+                foto_urls[counter - 1] = foto_evidencia_url;
 
                 counter++;
-            }            
+            }
 
         }
 
         [HttpPost]
-        
+
         public IActionResult Login(Usuario usuario)
         {
 
@@ -113,11 +113,11 @@ namespace Cicero.Controllers
                     //if password matches, login is succesful
                     if (dbPassword == usuario.Password)
                     {
-                        HttpContext.Session.SetString("Telefono",   dataReader.GetValue(3).ToString());
+                        HttpContext.Session.SetString("Telefono", dataReader.GetValue(3).ToString());
                         HttpContext.Session.SetString("username", dataReader.GetValue(0).ToString());
                         HttpContext.Session.SetString("userid", dataReader.GetValue(2).ToString());
                         HttpContext.Session.SetString("email", dataReader.GetValue(1).ToString());
-                        
+
                         //ViewData["sessionString"] = System.Web.HttpContext.Current.Session["userpermission"];
                         testconn.CloseDataReader();
                         testconn.CloseConnection();
@@ -143,6 +143,39 @@ namespace Cicero.Controllers
 
         }
 
+        [HttpPost]
+        public IActionResult RegisterUser(Usuario user)
+        {
+
+            //hash password before inserting in db
+            
+            DBConnection testconn = new DBConnection();
+            string query = "INSERT INTO Usuarios (Nombre, Email, Password, Telefono, Apellido, TarjetaCredito) " +
+                "VALUES (@name, @email, @password, @telefono, @apellido, @tarjetaCredito)";
+            Dictionary<string, Object> query_params = new Dictionary<string, object>();
+            query_params.Add("@name", user.Nombre);
+            query_params.Add("@email", user.Email);
+            query_params.Add("@password", user.Password);
+            query_params.Add("@telefono", user.Telefono);
+            query_params.Add("@apellido", user.Apellido);
+            query_params.Add("@tarjetaCredito", user.TarjetaCredito);
+            testconn.WriteToProduction(query, query_params);
+            testconn.CloseConnection();
+
+            bool login = DoLogin(user);
+            if (login)
+            {
+                return RedirectToAction("AccountInfo", "Home");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            
+        }
+
+
+
         private async Task<bool> Savefile(IFormFile file, string path, string file_name)
         {
             bool success = true;
@@ -164,14 +197,14 @@ namespace Cicero.Controllers
             {
                 await blockBlob.UploadFromStreamAsync(file.OpenReadStream());
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 success = false;
             }
 
-            
 
-            
+
+
 
             return success;
 
