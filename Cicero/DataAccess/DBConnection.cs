@@ -13,7 +13,7 @@ namespace Cicero.DataAccess
     {
         private SqlDataReader dataReader = null;
         private SqlConnection cnn;
-        private string testString = "Server=tcp:ciceron.database.windows.net,1433;Initial Catalog=cicero_dev;Persist Security Info=False;User ID=ciceron;Password=plusUltra1492;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
+        private string testString = "Server=tcp:hercules-soluciones.database.windows.net,1433;Initial Catalog=hercules_dev;Persist Security Info=False;User ID=hercules;Password=plusUltra1492;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;";
 
         public bool WriteToTest(string query)
         {
